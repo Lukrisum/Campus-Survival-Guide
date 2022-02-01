@@ -9,7 +9,6 @@ export default function Home() {
     return (
         <div className={mod.background_wrapper}>
             <div className={mod.background}>
-                <hr />
                 <div className={mod.navigator_wrapper}>
                     <ul>
                         <li
@@ -17,17 +16,17 @@ export default function Home() {
                             onClick={() => {
                                 skipToQuestionsPool('/');
                             }}
-                        >问题池</li>
+                        ><span>问题池</span></li>
                         <li
                             className="parts"
                             onClick={() => {
                                 skipToKnowledgeBase('/knowledge_base');
                             }}
-                        >百事通</li>
+                        ><span>百事通</span></li>
                     </ul>
                 </div>
             </div>
-            <hr />
+            <div className={mod.hr}></div>
             <Outlet />
         </div>
     )

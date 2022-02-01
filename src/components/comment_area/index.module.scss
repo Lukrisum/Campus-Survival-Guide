@@ -1,23 +1,45 @@
-.background_wrapper{
+.background_wrapper {
     height: 100%;
-    background-color: bisque;
+    background-color: rgba(255, 255, 255,1);
     overflow: hidden;
-    .content_wrapper,.comments_wrapper{
+    .h_wrapper {
+        height: 8.2rem;
+        text-align: center;
+        .h1 {
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 2rem;
+            line-height: 13.3rem;
+            color: #4fb2ff;
+        }
+    }
+    .content_wrapper,
+    .comments_wrapper {
         height: 20rem;
         background-color: blueviolet;
-        width:70rem;
-        margin:0 auto;
+        width: 70rem;
+        margin: 0 auto;
     }
-    .comments_wrapper{
+    .comments_wrapper {
         background-color: rgb(56, 228, 190);
-        height:100%;
-        ul{  
+        height: 100%;
+        ul {
             padding: 0;
             list-style: none;
-            width:70rem;
-            height:100%;
+            width: 70rem;
+            height: 100%;
             background-color: brown;
-            margin:0 auto;
-        }    
+            margin: 0 auto;
+        }
     }
+}
+
+.hr {
+    position: relative;
+    width: 33.3rem;
+    height: 0.1rem;
+
+    border: 1px solid rgba(239, 239, 239, 1);
+    margin: 0 auto;
 }

@@ -24,9 +24,10 @@ export default function Knowledge_base() {
     return (
         <div className={mod.background}>
             {
-                isloading
-                    ? <Loading />
-                    : <Content content={items} />
+                // isloading
+                //     ? <Loading />
+                //     : <Content content={items} />
+                <Content content={items} />
             }
         </div>
     )

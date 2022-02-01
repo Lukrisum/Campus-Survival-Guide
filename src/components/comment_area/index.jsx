@@ -7,6 +7,10 @@ import Spinner from "../reusable_components/spinner_component";
 export default function Comment_area() {
     return (
         <div className={mod.background_wrapper}>
+            <div className={mod.h_wrapper}>
+                <span className={mod.h1}>问题详情</span>
+            </div>
+            <div className={mod.hr}></div>
             <div className={mod.content_wrapper}>
                 <Content />
             </div>
