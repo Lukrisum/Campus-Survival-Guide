@@ -1,0 +1,32 @@
+.background{
+    width:70rem;
+    height: 81%;
+    background-color: rgb(255, 196, 226);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    .loader{
+        align-self: center;
+    }
+    ul{
+        display: inline-block;
+        list-style: none;
+        padding: 0;
+        margin:0;
+        width: 100%;
+        overflow:scroll;
+        height: 100%;
+        li{
+            display: flex;
+            width:100%;
+            background-color: rgba(104, 104, 119,.3);
+            height: 25rem;
+            margin-bottom:1rem
+        }
+    }
+}
+
+.action_data_wrapper{
+    float:right;
+}

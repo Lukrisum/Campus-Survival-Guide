@@ -1,0 +1,23 @@
+.background_wrapper{
+    height: 100%;
+    background-color: bisque;
+    overflow: hidden;
+    .content_wrapper,.comments_wrapper{
+        height: 20rem;
+        background-color: blueviolet;
+        width:70rem;
+        margin:0 auto;
+    }
+    .comments_wrapper{
+        background-color: rgb(56, 228, 190);
+        height:100%;
+        ul{  
+            padding: 0;
+            list-style: none;
+            width:70rem;
+            height:100%;
+            background-color: brown;
+            margin:0 auto;
+        }    
+    }
+}
