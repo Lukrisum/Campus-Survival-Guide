@@ -1,17 +1,20 @@
 import mod from './index.module.scss';
 import Spinner from '../../reusable_components/spinner_component';
-import { useState, useEffect, Fragment, createContext } from 'react';
+import { useState, useEffect, Fragment, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import Keyboard_input from '../../reusable_components/input_component';
 import Shady from '../../reusable_components/shady_component';
 import axios from 'axios';
+import MsgContext from '../../../context_manege';
 
 export default function Knowledge_base() {
-    const [isloading, setIsloading] = useState(false);      //whether is loaded or not
+    const [isloading, setIsloading] = useState(true);      //whether is loaded or not
     const [popup, setPopup] = useState(false);      //whether to render the input box or not
     const [items, setItems] = useState([]);        //a storage for the hots
-    const [questionid, setQuestionid] = useState(999);
+    const [questionid, setQuestionid] = useState();
     // const skipToSubmiited = useNavigate();
+
+    const toApp = useContext(MsgContext);
 
     //get what`s hot
     useEffect(() => {
@@ -72,9 +75,12 @@ export default function Knowledge_base() {
                     ? <Loading />
                     : <Content
                         content={items}
-                        func={(msg) => {
+                        func_1={(msg) => {
                             setPopup(true);
                             getQuestionid(msg);
+                        }}
+                        func_2={(msg) => {
+                            toApp(msg);
                         }}
                     />
             }
@@ -100,7 +106,8 @@ function Content(props) {
                         <li
                             key={index}
                             onClick={() => {
-                                skipToComment_area('/comment_area')
+                                props.func_2(item);
+                                skipToComment_area('/comment_area');
                             }}
                             id={item.questionid}
                         >
@@ -117,7 +124,7 @@ function Content(props) {
                                     e.stopPropagation();
                                 }}>
                                 <span className={mod.span_0}>{item.username}</span>
-                                <span className={mod.span_1}>最先提问：</span>
+                                <span className={mod.span_1}>最先提问:</span>
                                 <span className={mod.span_2}>三天前</span>
                             </div>
                             <div className={mod.text_wrapper}>
@@ -130,9 +137,9 @@ function Content(props) {
                                 }}>
                                 <span
                                     onClick={() => {
-                                        props.func(item.questionid);
+                                        props.func_1(item.questionid);
                                     }}
-                                >我要回答{item.questionid}</span>
+                                >我要回答</span>
                                 <span>同问{item.great}</span>
                             </div>
                         </li>
