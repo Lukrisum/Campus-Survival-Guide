@@ -1,0 +1,39 @@
+.keyboard_input_wrapper {
+    height: 15.5rem;
+    width: 37.5rem;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px 20px 0px 0px;
+    position: fixed;
+    bottom: 0;
+    overflow: scroll;
+    padding: 1.5rem;
+    z-index: 2;
+    span {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 19px;
+        color: #5c5b60;
+    }
+    textarea {
+        padding: 0rem;
+        padding-top: .3rem;
+        box-sizing: border-box;
+        width: 34.5rem;
+        outline: none;
+        border: none;
+
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+
+        color: #979797;
+    }
+    button{
+        float: right;
+    }
+}

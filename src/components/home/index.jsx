@@ -1,6 +1,8 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router";
 import mod from './index.module.scss'
+import Shady from "../reusable_components/shady_component";
+import Keyboard_input from "../reusable_components/input_component";
 
 export default function Home() {
     const skipToKnowledgeBase = useNavigate();

@@ -1,23 +1,24 @@
 import mod from './index.module.scss';
 import Spinner from '../../reusable_components/spinner_component';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment, createContext } from 'react';
 import { useNavigate } from 'react-router';
+import Keyboard_input from '../../reusable_components/input_component';
+import Shady from '../../reusable_components/shady_component';
 import axios from 'axios';
 
 export default function Knowledge_base() {
-    const [isloading, setIsloading] = useState(true);
-    const [items, setItems] = useState([{
-        great: 10,
-        username: 'wxs',
-        que: ''
-    }]);
+    const [isloading, setIsloading] = useState(false);      //whether is loaded or not
+    const [popup, setPopup] = useState(false);      //whether to render the input box or not
+    const [items, setItems] = useState([]);        //a storage for the hots
+    const [questionid, setQuestionid] = useState(999);
+    // const skipToSubmiited = useNavigate();
 
+    //get what`s hot
     useEffect(() => {
         axios.get('http://120.77.8.223:88/hot')
             .then(({ data }) => {
                 setItems(() => {
                     const newarr = items.concat(data.msg);
-                    console.log(newarr);
                     return newarr;
                 })
                 setIsloading(false);
@@ -25,12 +26,57 @@ export default function Knowledge_base() {
             .catch(console.error)
     }, [])
 
+    //get question id from the child component
+    const getQuestionid = (msg) => {
+        setQuestionid(msg);
+    }
+
+    //push an answer (a function added into the component <Keyboard_input/>)
+    const handleSubmit = (inputValue) => {
+        axios({
+            method: 'post',
+            url: 'http://120.77.8.223:88/hand_ans',
+            data: {
+                "ans": inputValue,
+                "username": "???",
+                "questionid": questionid
+            },
+            headers: {
+                'code': 'iknow'
+            }
+        }).then((res) => {
+            alert("发布成功(待审核...)");
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    //rendering
     return (
         <div className={mod.background}>
             {
+                popup
+                    ? <Fragment>
+                        <Shady func={() => {
+                            setPopup(false);
+                        }} />
+                        <Keyboard_input
+                            btnOnclick={handleSubmit}
+                        />
+                    </Fragment>
+                    : <Fragment />
+            }
+
+            {
                 isloading
                     ? <Loading />
-                    : <Content content={items} />
+                    : <Content
+                        content={items}
+                        func={(msg) => {
+                            setPopup(true);
+                            getQuestionid(msg);
+                        }}
+                    />
             }
         </div>
     )
@@ -45,8 +91,7 @@ function Loading() {
 }
 
 function Content(props) {
-    const skipTo = useNavigate()
-
+    const skipToComment_area = useNavigate();
     return (
         <ul>
             {
@@ -55,8 +100,10 @@ function Content(props) {
                         <li
                             key={index}
                             onClick={() => {
-                                skipTo('/comment_area')
-                            }}>
+                                skipToComment_area('/comment_area')
+                            }}
+                            id={item.questionid}
+                        >
                             <div
                                 className={mod.profile_img_wrapper}
                                 onClick={(e) => {
@@ -81,7 +128,11 @@ function Content(props) {
                                 onClick={(e) => {
                                     e.stopPropagation();
                                 }}>
-                                <span>我要回答</span>
+                                <span
+                                    onClick={() => {
+                                        props.func(item.questionid);
+                                    }}
+                                >我要回答{item.questionid}</span>
                                 <span>同问{item.great}</span>
                             </div>
                         </li>
