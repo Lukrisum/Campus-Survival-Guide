@@ -6,6 +6,7 @@ import Keyboard_input from '../../reusable_components/input_component';
 import Shady from '../../reusable_components/shady_component';
 import axios from 'axios';
 import MsgContext from '../../../context_manege';
+import Text_box from '../../reusable_components/text_box_component';
 
 export default function Knowledge_base() {
     const [isloading, setIsloading] = useState(true);      //whether is loaded or not
@@ -48,7 +49,9 @@ export default function Knowledge_base() {
                 'code': 'iknow'
             }
         }).then((res) => {
-            alert("发布成功(待审核...)");
+            alert("提交成功(待审核...)");
+            console.log(res.data.answerid)
+            setPopup(false);
         }).catch((error) => {
             console.log(error)
         })
@@ -128,7 +131,7 @@ function Content(props) {
                                 <span className={mod.span_2}>三天前</span>
                             </div>
                             <div className={mod.text_wrapper}>
-                                {item.que}
+                                <Text_box text={item.que} />
                             </div>
                             <div
                                 className={mod.bottom_data_wrapper}

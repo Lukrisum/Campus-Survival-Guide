@@ -16,7 +16,6 @@ export default function Knowledge_base() {
                     return newarr;
                 })
                 setIsloading(false);
-                console.log(items);
             })
             .catch(console.error)
     },[])

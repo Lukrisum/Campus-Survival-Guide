@@ -1,7 +1,10 @@
 .background_wrapper {
     height: 100%;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgb(218, 109, 109);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .h_wrapper {
         height: 8.2rem;
         text-align: center;
@@ -17,7 +20,81 @@
     .content_wrapper {
         height: 20rem;
         background-color: blueviolet;
-        width: 100%;
+        width: 33.3rem;
+        margin:0 auto;
+        .content_text_wrapper {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            width: 33.3rem;
+            height: 100%;
+            li {
+                position: relative;
+                width: 33.3rem;
+                background-color: rgba(104, 104, 119, 0.3);
+                height: 13rem;
+                margin: 0.7rem 0;
+                .profile_img_wrapper {
+                    position: inherit;
+                    width: 4.467rem;
+                    height: 4.4rem;
+                    background-color: chartreuse;
+                    display: inline-block;
+                }
+                .username_wrapper {
+                    display: inline-block;
+                    justify-content: space-between;
+                    height: 4.4rem;
+                    width: 28.7rem;
+                    position: absolute;
+                    background-color: rgb(146, 75, 24);
+                    span {
+                        height: 100%;
+                        display: inline-block;
+                        background-color: darkcyan;
+                        width: 7rem;
+                        text-align: center;
+                        line-height: 3rem;
+                        font-family: Poppins;
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 1.4rem;
+                        line-height: 4.1rem;
+                        color: rgba(124, 229, 212, 1);
+                        overflow: hidden;
+                    }
+                    .span_1 {
+                        text-align: left;
+                        width: 14.7rem;
+                    }
+                    .span_2 {
+                        float: right;
+                    }
+                }
+                .text_wrapper {
+                    display: inline-block;
+                    height: 6.7rem;
+                    width: 28.7rem;
+                    box-sizing: border-box;
+                    position: absolute;
+                    top: 4.4rem;
+                    padding-left: 1.3rem;
+                    background-color: rgb(221, 15, 15);
+                }
+                .bottom_data_wrapper {
+                    display: inline-block;
+                    position: absolute;
+                    bottom: 0rem;
+                    width: 28.7rem;
+                    height: 2rem;
+                    background-color: rgb(125, 125, 160);
+                    span {
+                        float: right;
+                        width: 6rem;
+                    }
+                }
+            }
+        }        
     }
     .comments_wrapper {
         height: 20rem;
@@ -28,7 +105,7 @@
         ul {
             padding: 0;
             list-style: none;
-            width: 70rem;
+            width: 33.3rem;
             height: 100%;
             background-color: brown;
             margin: 0 auto;
@@ -42,78 +119,4 @@
     height: 0.1rem;
     border: 1px solid rgba(239, 239, 239, 1);
     margin: 0 auto;
-}
-
-.content_text_wrapper {
-    list-style: none;
-    padding: 0 2rem;
-    margin: 0 auto;
-    width: 33.3rem;
-    height: 100%;
-    li {
-        position: relative;
-        width: 33.3rem;
-        background-color: rgba(104, 104, 119, 0.3);
-        height: 13rem;
-        margin: 0.7rem 0;
-        .profile_img_wrapper {
-            position: inherit;
-            width: 4.467rem;
-            height: 4.4rem;
-            background-color: chartreuse;
-            display: inline-block;
-        }
-        .username_wrapper {
-            display: inline-block;
-            justify-content: space-between;
-            height: 4.4rem;
-            width: 28.7rem;
-            position: absolute;
-            background-color: rgb(146, 75, 24);
-            span {
-                height: 100%;
-                display: inline-block;
-                background-color: darkcyan;
-                width: 7rem;
-                text-align: center;
-                line-height: 3rem;
-                font-family: Poppins;
-                font-style: normal;
-                font-weight: bold;
-                font-size: 1.4rem;
-                line-height: 4.1rem;
-                color: rgba(124, 229, 212, 1);
-                overflow: hidden;
-            }
-            .span_1 {
-                text-align: left;
-                width: 14.7rem;
-            }
-            .span_2 {
-                float: right;
-            }
-        }
-        .text_wrapper {
-            display: inline-block;
-            height: 6.7rem;
-            width: 28.7rem;
-            box-sizing: border-box;
-            position: absolute;
-            top: 4.4rem;
-            padding: 2rem;
-            background-color: rgb(221, 15, 15);
-        }
-        .bottom_data_wrapper {
-            display: inline-block;
-            position: absolute;
-            bottom: 0rem;
-            width: 28.7rem;
-            height: 2rem;
-            background-color: rgb(125, 125, 160);
-            span {
-                float: right;
-                width: 6rem;
-            }
-        }
-    }
 }

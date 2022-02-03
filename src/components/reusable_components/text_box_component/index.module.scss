@@ -1,0 +1,54 @@
+.text_box_wrapper {
+    line-height: floor($number: 0);
+    display: inline-block;
+    position: relative;
+    top: -1.2rem;
+    filter: drop-shadow(0 0 7px rgb(58, 53, 53));
+    ._blank {
+        width: 1.386rem;
+        height: 1.2rem;
+        display: inline-block;
+    }
+    .triangle {
+        position: relative;
+        left: 1.3rem;
+        display: inline-block;
+        border-width: 1.2rem 0.693rem;
+        border-style: solid;
+        border-color: transparent transparent rgb(170, 86, 86) transparent;
+        height: 0px;
+        width: 0px;
+        z-index: 2;
+    }
+    .triangle::before {
+        position: relative;
+        left: 1.3rem;
+        display: inline-block;
+        border-width: 1.2rem 0.693rem;
+        border-style: solid;
+        border-color: transparent transparent rgb(170, 86, 86) transparent;
+        height: 0px;
+        width: 0px;
+        z-index: 2;
+    }
+    .text_box {
+        text-align: center;
+        width: 20rem;
+        height: 3.6rem;
+        background-color: rgb(170, 86, 86);
+        line-height: 3.6rem;
+        padding-right: 0.6rem;
+        span {
+            width: 19rem;
+            text-align: left;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
+}

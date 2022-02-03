@@ -47,6 +47,26 @@
                 line-height: 1.9rem;
             }
         }
+        .li_hidden {
+            background: #ffffff;
+            border-radius: 15px;
+            width: 9.6rem;
+            height: 3.6rem;
+            display: inline-block;
+            margin-bottom: 0.7rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            text-align: center;
+            color: #b4afaf;
+            line-height: 3.6rem;
+            span {
+                font-family: Roboto;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 1.6rem;
+                line-height: 1.9rem;
+            }
+        }
     }
 }
 
@@ -58,5 +78,3 @@
     border: 1px solid rgba(239, 239, 239, 1);
     margin: 0 auto;
 }
-
-
