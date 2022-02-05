@@ -17,11 +17,18 @@
             color: #4fb2ff;
         }
     }
+    .hr {
+        position: relative;
+        width: 35rem;
+        height: 0.1rem;
+        border: 1px solid rgba(239, 239, 239, 1);
+        margin: 0 auto;
+    }
     .content_wrapper {
         height: 20rem;
         background-color: blueviolet;
         width: 33.3rem;
-        margin:0 auto;
+        margin: 0 auto;
         .content_text_wrapper {
             list-style: none;
             padding: 0;
@@ -94,7 +101,19 @@
                     }
                 }
             }
-        }        
+        }
+    }
+    .section_header_wrapper {
+        padding-top: 0.7rem;
+        width: 35.5rem;
+        .section_header {
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 1.4rem;
+            line-height: 140%;
+            align-self: flex-start;
+        }
     }
     .comments_wrapper {
         height: 20rem;
@@ -105,18 +124,85 @@
         ul {
             padding: 0;
             list-style: none;
-            width: 33.3rem;
-            height: 100%;
+            width: 36rem;
+            height: 35rem;
             background-color: brown;
             margin: 0 auto;
+            overflow: scroll;
+            display: flex;
+            flex-direction: column;
+            .comments_content_wrapper {
+                padding-top: 1rem;
+                position: relative;
+                .profile_info_wrapper {
+                    display: flex;
+                    background-color: rgb(238, 255, 0);
+                    img {
+                        display: inline-block;
+                        min-width: 3.6rem;
+                        min-height: 3.6rem;
+                        max-height: 3.6rem;
+                        max-width: 3.6rem;
+                        border-radius: 50%;
+                        background-color: blue;
+                    }
+                    span {
+                        padding-left: 0.8rem;
+                        font-family: Poppins;
+                        font-style: normal;
+                        font-weight: normal;
+                        font-size: 1.6rem;
+                        line-height: 1.3rem;
+                    }
+                }
+                .comments_text_wrapper {
+                    display: inline-block;
+                    position: relative;
+                    background-color: rgb(43, 190, 117);
+                    width: 30rem;
+                    left: 4.3rem;
+                    top: -1.5rem;
+                    span {
+                        display: inline-block;
+                        font-family: Poppins;
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 1.4rem;
+                        width: 30rem;
+                        word-wrap: break-word;
+                        background-color: darkmagenta;
+                    }
+                }
+                .great_icon_wrapper {
+                    background-color: dimgrey;
+                    height: 4rem;
+                    display: flex;
+                    justify-content: flex-end;
+                    .great_icon_real_wrapper {
+                        display: flex;
+                        background-color: dodgerblue;
+                        height: 100%;
+                        width: 10rem;
+                    }
+                }
+            }
+            .comments_end_wrapper{
+                border-top: rgb(125, 132, 139) 1rem solid;
+                border-bottom: rgb(125, 132, 139) 1rem solid;
+                height: 100rem;
+                width: 100%;
+                position: relative;
+                bottom: 0rem;
+                text-align: center;
+            }
         }
     }
 }
 
-.hr {
-    position: relative;
-    width: 33.3rem;
-    height: 0.1rem;
-    border: 1px solid rgba(239, 239, 239, 1);
-    margin: 0 auto;
+.loader{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    height: 100%;
 }

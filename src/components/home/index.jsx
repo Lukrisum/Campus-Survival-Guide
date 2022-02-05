@@ -1,48 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import mod from './index.module.scss'
+import { useLocation } from "react-router-dom";
 
-export default function Home() {
+export default function Home(props) {
     const skipToKnowledgeBase = useNavigate();
     const skipToQuestionsPool = useNavigate();
 
     // handle topbar switching
+    const switch_state = useLocation();
     const [navSwitch_0, setNavSwitch_0] = useState(true);
     const [navSwitch_1, setNavSwitch_1] = useState(false);
 
-    const reflash_flag = localStorage.getItem('switch');
-
-    function saveSwitch() {
-        localStorage.setItem('switch', JSON.stringify({
-            state_0: navSwitch_0,
-            state_1: navSwitch_1
-        }));
-    }
-
-    function getAndSetSwitch() {
-        setNavSwitch_1(JSON.parse(localStorage.getItem('switch')).state_0);
-        setNavSwitch_0(JSON.parse(localStorage.getItem('switch')).state_1);
-    }
-
-    function handleSwitch_0() {
-        setNavSwitch_0(true);
-        setNavSwitch_1(false);
-        saveSwitch();
-        getAndSetSwitch();
-    }
-
-    function handleSwitch_1() {
-        setNavSwitch_1(true);
-        setNavSwitch_0(false);
-        saveSwitch();
-        getAndSetSwitch();
-    }
-
     useEffect(() => {
-        if (reflash_flag) {
-            getAndSetSwitch();
+        if (switch_state.state) {
+            setNavSwitch_0(switch_state.state.switch_0);
+            setNavSwitch_1(switch_state.state.switch_1);
         }
-    }, [])
+    });
 
     return (
         <div className={mod.background_wrapper}>
@@ -51,16 +26,14 @@ export default function Home() {
                     <ul>
                         <li
                             onClick={() => {
-                                handleSwitch_1();
-                                skipToQuestionsPool('/');
+                                skipToQuestionsPool('/', { state: { switch_0: 1, switch_1: 0 } });
                             }}
                             id="questions_pool"
                             className={`${navSwitch_0 ? mod.li_show : mod.li_hidden}`}
                         ><span>问题池</span></li>
                         <li
                             onClick={() => {
-                                handleSwitch_0();
-                                skipToKnowledgeBase('/knowledge_base');
+                                skipToKnowledgeBase('/knowledge_base', { state: { switch_0: 0, switch_1: 1 } });
                             }}
                             id="knowledge_base"
                             className={`${navSwitch_1 ? mod.li_show : mod.li_hidden}`}

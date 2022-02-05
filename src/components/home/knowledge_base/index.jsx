@@ -23,10 +23,9 @@ export default function Knowledge_base() {
     return (
         <div className={mod.background}>
             {
-                // isloading
-                //     ? <Loading />
-                //     : <Content content={items} />
-                <Content content={items} />
+                isloading
+                    ? <Loading />
+                    : <Content content={items} />
             }
         </div>
     )
@@ -59,9 +58,9 @@ function Content(props) {
                             </blockquote>
                         </div>
                         <div className={mod.action_data_wrapper}>
-                            <span>点赞数:{item.Great}</span>
+                            <span>点赞数:{item.great}</span>
                             <br />
-                            <span>回复数:{item.AnsNum}</span>
+                            <span>回复数:{item.ansnum}</span>
                         </div>
                     </li>
                 )

@@ -18,7 +18,7 @@ function App() {
               <Questions_pool />
             </MsgContext.Provider>
           }></Route>
-          <Route path='/knowledge_base' element={<Knowledge_base />}></Route>
+          <Route path='/knowledge_base/' element={<Knowledge_base />}></Route>
         </Route>
         <Route path='/comment_area' element={
           <MsgContext.Provider value={msg}>

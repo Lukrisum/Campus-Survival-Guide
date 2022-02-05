@@ -19,7 +19,7 @@ export default function Knowledge_base() {
 
     //get what`s hot
     useEffect(() => {
-        axios.get('http://120.77.8.223:88/hot')
+        axios.get('http://120.77.8.223:88/aphot')
             .then(({ data }) => {
                 setItems(() => {
                     const newarr = items.concat(data.msg);
@@ -39,7 +39,7 @@ export default function Knowledge_base() {
     const handleSubmit = (inputValue) => {
         axios({
             method: 'post',
-            url: 'http://120.77.8.223:88/hand_ans',
+            url: 'http://120.77.8.223:88/aphand_ans',
             data: {
                 "ans": inputValue,
                 "username": "???",
@@ -57,7 +57,6 @@ export default function Knowledge_base() {
         })
     }
 
-    //rendering
     return (
         <div className={mod.background}>
             {
@@ -143,6 +142,7 @@ function Content(props) {
                                         props.func_1(item.questionid);
                                     }}
                                 >我要回答</span>
+                                <span>回答{item.ansnum}</span>
                                 <span>同问{item.great}</span>
                             </div>
                         </li>

@@ -15,7 +15,7 @@ export default function Comment_area() {
     //handle answering
     const handleSubmit = (inputValue) => {
         axios({
-            url: 'http://120.77.8.223:88/hand_ans',
+            url: 'http://120.77.8.223:88/aphand_ans',
             method: 'post',
             headers: {
                 'code': 'iknow',
@@ -46,6 +46,10 @@ export default function Comment_area() {
                     func_setPop={setPopup}
                 />
             </div>
+            <div className={mod.hr}></div>
+            <div className={mod.section_header_wrapper}>
+                <span className={mod.section_header}>相关回答</span>
+            </div>
             <div className={mod.comments_wrapper}>
                 <Comments />
             </div>
@@ -73,19 +77,29 @@ function Content(props) {
     const item = useContext(MsgContext);
 
     // ...  change this block to that based on network request
-    let store_item;
+    const [store_item, setStore_item] = useState({});
     const enter_flag = item.que || item.que == '';
     const reflash_flag = localStorage.getItem('que_item');
 
-    (function () {
+    useEffect(() => {
         if (reflash_flag && !enter_flag) {
-            store_item = JSON.parse(localStorage.getItem('que_item'));
+            setStore_item(JSON.parse(localStorage.getItem('que_item')));
         }
         else if (enter_flag) {
             localStorage.setItem('que_item', JSON.stringify(item));
-            store_item = JSON.parse(localStorage.getItem('que_item'));
+            setStore_item(JSON.parse(localStorage.getItem('que_item')));
         }
-    })();
+    }, []);
+
+    // (function () {
+    //     if (reflash_flag && !enter_flag) {
+    //         setStore_item(JSON.parse(localStorage.getItem('que_item')));
+    //     }
+    //     else if (enter_flag) {
+    //         localStorage.setItem('que_item', JSON.stringify(item));
+    //         setStore_item(JSON.parse(localStorage.getItem('que_item')));
+    //     }
+    // })();
 
     return (
         <Fragment>
@@ -108,6 +122,7 @@ function Content(props) {
                                 props.func_getMsg(enter_flag ? item : store_item);
                                 props.func_setPop(true);
                             }}>我要回答</span>
+                        <span>回答{enter_flag ? item.ansnum : store_item.ansnum}</span>
                         <span>同问{enter_flag ? item.great : store_item.great}</span>
                     </div>
                 </li>
@@ -117,29 +132,64 @@ function Content(props) {
 }
 
 function Comments() {
+    const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         axios({
             method: 'get',
             url: 'http://120.77.8.223:88/hot'
         }).then(({ data }) => {
+            setItems(() => {
+                const newarr = items.concat(data.msg);
+                return newarr;
+            })
             setIsLoading(false);
         })
     }, [])
 
     return (
-        <div>
+        <div className={mod.comments_wrapper}>
             <ul>
                 {
                     isLoading
-                        ? <Spinner />
+                        ? <Loading />
                         : <Fragment>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
+                            {
+                                items.map(item => {
+                                    return (
+                                        <li className={mod.comments_content_wrapper}>
+                                            <div className={mod.profile_info_wrapper}>
+                                                <img src="" alt="" />
+                                                <span>username</span>
+                                            </div>
+                                            <div className={mod.comments_text_wrapper}>
+                                                <span>{item.que}</span>
+                                            </div>
+                                            <div className={mod.great_icon_wrapper}>
+                                                <div className={mod.great_icon_real_wrapper}>
+                                                    <img src="" alt="" />
+                                                    <img src="" alt="" />
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )
+                                })
+                            }
+                            <li className={mod.comments_end_wrapper}>
+                                暂无更多
+                            </li>
                         </Fragment>
                 }
             </ul>
+        </div>
+    )
+}
+
+function Loading() {
+    return (
+        <div className={mod.loader}>
+            <Spinner />
         </div>
     )
 }
