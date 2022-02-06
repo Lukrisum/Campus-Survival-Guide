@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
 import axios from 'axios';
 import mod from './index.module.scss';
-import Spinner from "../reusable_components/spinner_component";
-import MsgContext from "../../context_manege";
-import Keyboard_input from "../reusable_components/input_component";
-import Shady from "../reusable_components/shady_component";
-import Text_box from "../reusable_components/text_box_component";
+import Spinner from "../../../reusable_components/spinner_component";
+import MsgContext from "../../../../context_manege";
+import Keyboard_input from "../../../reusable_components/input_component";
+import Shady from "../../../reusable_components/shady_component";
+import Text_box from "../../../reusable_components/text_box_component";
 
 export default function Comment_area() {
     //handle popup
@@ -156,20 +156,22 @@ function Comments() {
                         ? <Loading />
                         : <Fragment>
                             {
-                                items.map(item => {
+                                items.map((item,index) => {
                                     return (
-                                        <li className={mod.comments_content_wrapper}>
+                                        <li className={mod.comments_content_wrapper} key={index}>
                                             <div className={mod.profile_info_wrapper}>
                                                 <img src="" alt="" />
-                                                <span>username</span>
+                                                <span>{item.username}</span>
                                             </div>
                                             <div className={mod.comments_text_wrapper}>
                                                 <span>{item.que}</span>
                                             </div>
                                             <div className={mod.great_icon_wrapper}>
                                                 <div className={mod.great_icon_real_wrapper}>
-                                                    <img src="" alt="" />
-                                                    <img src="" alt="" />
+                                                    <img src="" alt="点赞icon" />
+                                                    <span>{item.great}</span>
+                                                    <img src="" alt="点踩icon" />
+                                                    <span>{item.bad}</span>
                                                 </div>
                                             </div>
                                         </li>

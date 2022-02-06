@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Home from "./components/home";
 import Knowledge_base from "./components/home/knowledge_base";
 import Questions_pool from "./components/home/questions_pool";
-import Comment_area from "./components/comment_area";
+import Comment_area from "./components/home/questions_pool/comment_area";
 import MsgContext from "./context_manege";
 import { useState } from "react";
 

@@ -57,6 +57,20 @@ export default function Knowledge_base() {
         })
     }
 
+    const handleLike = () => {
+        axios({
+            method: 'post',
+            url: 'http://120.77.8.223:88/aplike',
+            data: {
+                "questionid": questionid
+            }
+        }).then((res) => {
+            alert(res.data.msg);
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return (
         <div className={mod.background}>
             {
@@ -77,9 +91,13 @@ export default function Knowledge_base() {
                     ? <Loading />
                     : <Content
                         content={items}
-                        func_1={(msg) => {
+                        func_handleAdd_ans={(msg) => {
                             setPopup(true);
                             getQuestionid(msg);
+                        }}
+                        func_handleAdd_like={(msg)=>{
+                            getQuestionid(msg);
+                            handleLike();
                         }}
                         func_2={(msg) => {
                             toApp(msg);
@@ -99,7 +117,8 @@ function Loading() {
 }
 
 function Content(props) {
-    const skipToComment_area = useNavigate();
+    const nevigate = useNavigate();
+
     return (
         <ul>
             {
@@ -109,7 +128,7 @@ function Content(props) {
                             key={index}
                             onClick={() => {
                                 props.func_2(item);
-                                skipToComment_area('/comment_area');
+                                nevigate('/comment_area');
                             }}
                             id={item.questionid}
                         >
@@ -139,11 +158,15 @@ function Content(props) {
                                 }}>
                                 <span
                                     onClick={() => {
-                                        props.func_1(item.questionid);
+                                        props.func_handleAdd_ans(item.questionid);
                                     }}
                                 >我要回答</span>
                                 <span>回答{item.ansnum}</span>
-                                <span>同问{item.great}</span>
+                                <span
+                                    onClick={() => {
+                                        props.func_handleAdd_like(item.questionid);
+                                    }}
+                                >同问{item.great}</span>
                             </div>
                         </li>
                     )

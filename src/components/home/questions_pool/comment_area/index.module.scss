@@ -125,8 +125,8 @@
             padding: 0;
             list-style: none;
             width: 36rem;
-            height: 35rem;
-            background-color: brown;
+            height: 57rem;
+            background-color: dimgrey;
             margin: 0 auto;
             overflow: scroll;
             display: flex;
@@ -134,9 +134,10 @@
             .comments_content_wrapper {
                 padding-top: 1rem;
                 position: relative;
+                border-bottom:2px solid #000 ;
                 .profile_info_wrapper {
                     display: flex;
-                    background-color: rgb(238, 255, 0);
+                    background-color: dimgrey;
                     img {
                         display: inline-block;
                         min-width: 3.6rem;
@@ -182,11 +183,11 @@
                         display: flex;
                         background-color: dodgerblue;
                         height: 100%;
-                        width: 10rem;
+                        align-items: center;
                     }
                 }
             }
-            .comments_end_wrapper{
+            .comments_end_wrapper {
                 border-top: rgb(125, 132, 139) 1rem solid;
                 border-bottom: rgb(125, 132, 139) 1rem solid;
                 height: 100rem;
@@ -194,12 +195,18 @@
                 position: relative;
                 bottom: 0rem;
                 text-align: center;
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 1.2rem;
+                line-height: 140%;
+                color: #99adb7;
             }
         }
     }
 }
 
-.loader{
+.loader {
     display: flex;
     flex-direction: column;
     justify-content: center;
