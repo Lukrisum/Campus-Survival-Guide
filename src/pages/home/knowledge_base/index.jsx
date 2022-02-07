@@ -1,5 +1,5 @@
 import mod from './index.module.scss';
-import Spinner from '../../reusable_components/spinner_component';
+import Spinner from '../../../components/spinner';
 import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
@@ -11,10 +11,11 @@ export default function Knowledge_base() {
     useEffect(() => {
         axios.get('http://120.77.8.223:88/hot')
             .then(({ data }) => {
-                setItems(() => {
-                    const newarr = items.concat(data.msg);
-                    return newarr;
-                })
+                const addList = (preList) => {
+                    const newList = preList.concat(data.msg);
+                    return newList;
+                }
+                setItems(addList(items))
                 setIsloading(false);
             })
             .catch(console.error)
@@ -84,7 +85,7 @@ function Content(props) {
                     </div>
                     <div className={mod.div}>
                         <div className={mod.section_nav}>
-                            <img src="" alt="网址号码" onclick={() => {
+                            <img src="" alt="网址号码" onClick={() => {
                                 navigate('/');
                             }} />
                         </div>
@@ -92,7 +93,7 @@ function Content(props) {
                     </div>
                     <div className={mod.div}>
                         <div className={mod.section_nav}>
-                            <img src="" alt="教学周历" onclick={() => {
+                            <img src="" alt="教学周历" onClick={() => {
                                 navigate('/');
                             }} />
                         </div>

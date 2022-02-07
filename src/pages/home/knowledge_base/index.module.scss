@@ -1,5 +1,5 @@
 .background {
-    height: 81%;
+    height: 85%;
     background-color: rgb(255, 196, 226);
     margin: 0 auto;
     display: flex;
@@ -52,7 +52,7 @@
                     width: 7rem;
                     height: 7rem;
                     background-color: #4fb2ff;
-                    img{
+                    img {
                         display: inline-block;
                         height: 100%;
                         width: 100%;
@@ -99,8 +99,8 @@
                     font-size: 1.7rem;
                     display: block;
                 }
-                .hot_ques_text_content_wrapper{
-                    padding:.5rem 0rem;
+                .hot_ques_text_content_wrapper {
+                    padding: 0.5rem 0rem;
                     .hot_ques_text_content {
                         display: -webkit-box;
                         -webkit-box-orient: vertical;
@@ -108,14 +108,14 @@
                         overflow: hidden;
                         background-color: #4fb2ff;
                         text-overflow: ellipsis;
-                        max-height: 2.7rem;
-                    }    
+                        max-height: 3.2rem;
+                    }
                 }
             }
-            .hot_ques_bottom_info_wrapper{
+            .hot_ques_bottom_info_wrapper {
                 display: flex;
                 justify-content: flex-end;
-            }            
+            }
         }
     }
 }

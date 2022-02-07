@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import mod from './index.module.scss';
 
-export default function Keyboard_input(props) {
+export default function KeyboardInput(props) {
     const [inputValue, setInputValue] = useState('');
 
     const handleInput = (e) => {
@@ -10,7 +10,7 @@ export default function Keyboard_input(props) {
 
     return (
         <div className={mod.keyboard_input_wrapper}>
-            <span>回答问题</span>
+            <span>{props.header}</span>
             <hr />
             <textarea
                 placeholder='请输入你的具体回答...'
