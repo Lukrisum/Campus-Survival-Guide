@@ -5,17 +5,16 @@ import MsgContext from "../../../../context_manege";
 import Spinner from "../../../../components/spinner";
 import KeyboardInput from "../../../../components/keyboard_input";
 import Shady from "../../../../components/shady";
-import Text_box from "../../../../components/text_box";
+import TextBox from "../../../../components/text_box";
 
 export default function Comment_area() {
-
 
   //handle popup
   const [popup, setPopup] = useState(false);
   const [msg, setMsg] = useState({});
 
   //handle answering
-  const handleSubmit = (inputValue) => {
+  const handleSubmit = (ans) => {
     axios({
       url: 'http://120.77.8.223:88/aphand_ans',
       method: 'post',
@@ -23,7 +22,7 @@ export default function Comment_area() {
         'code': 'iknow',
       },
       data: {
-        'ans': inputValue,
+        ans,
         'username': '???',
         'questionid': msg.questionid
       }
@@ -33,6 +32,20 @@ export default function Comment_area() {
       setPopup(false);
     }).catch((error) => {
       console.log(error);
+    })
+  }
+
+  const handleLike = (questionid) => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aplike',
+      data: {
+        questionid,
+      }
+    }).then((res) => {
+      alert(res.data.msg);
+    }).catch((error) => {
+      console.log(error)
     })
   }
 
@@ -46,6 +59,7 @@ export default function Comment_area() {
         <Content
           handlegetMsg={setMsg}
           handleSetPop={setPopup}
+          handleAddLike={handleLike}
         />
       </div>
       <div className={mod.hr}></div>
@@ -60,7 +74,7 @@ export default function Comment_area() {
         popup
           ? <Fragment>
             <Shady
-              func={() => {
+              onclick={() => {
                 setPopup(false);
               }}
             />
@@ -71,7 +85,6 @@ export default function Comment_area() {
           </Fragment>
           : <Fragment />
       }
-
     </div>
   )
 }
@@ -94,6 +107,10 @@ function Content(props) {
     }
   }, []);
 
+  useEffect(()=>{
+    localStorage.setItem('que_item', JSON.stringify(storeItems));
+  },[storeItems])
+
   return (
     <Fragment>
       <ul className={mod.content_text_wrapper}>
@@ -107,7 +124,7 @@ function Content(props) {
             <span className={mod.span_2}>三天前</span>
           </div>
           <div className={mod.text_wrapper}>
-            <Text_box text={enterFlag ? item.que : storeItems.que} />
+            <TextBox text={enterFlag ? item.que : storeItems.que} />
           </div>
           <div className={mod.bottom_data_wrapper}>
             <span
@@ -116,7 +133,13 @@ function Content(props) {
                 props.handleSetPop(true);
               }}>我要回答</span>
             <span>回答{enterFlag ? item.ansnum : storeItems.ansnum}</span>
-            <span>同问{enterFlag ? item.great : storeItems.great}</span>
+            <span onClick={() => {
+              props.handleAddLike(enterFlag ? item.questionid : storeItems.questionid);
+              setstoreItems({
+                ...storeItems,
+                great: storeItems.great + 1
+              });
+            }} >同问{enterFlag ? item.great : storeItems.great}</span>
           </div>
         </li>
       </ul>

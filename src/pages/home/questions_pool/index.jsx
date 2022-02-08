@@ -4,15 +4,17 @@ import { useNavigate } from 'react-router';
 import Spinner from '../../../components/spinner';
 import Shady from '../../../components/shady';
 import KeyboardInput from '../../../components/keyboard_input';
-import Text_box from '../../../components/text_box';
+import TextBox from '../../../components/text_box';
 import axios from 'axios';
 import MsgContext from '../../../context_manege';
+import FabMine from '../../../components/floating_action_button';
 
 export default function Knowledge_base() {
   const [isloading, setIsloading] = useState(true);      //whether is loaded or not
   const [popup, setPopup] = useState(false);      //whether to render the input box or not
   const [items, setItems] = useState([]);        //a storage for the hots
   const [questionid, setQuestionid] = useState();
+  const [pushFlag, setPushFlag] = useState(false);
   // const skipToSubmiited = useNavigate();
 
   const toApp = useContext(MsgContext);
@@ -31,20 +33,15 @@ export default function Knowledge_base() {
       .catch(console.error)
   }, [])
 
-  //get question id from the child component
-  const getQuestionid = (msg) => {
-    setQuestionid(msg);
-  }
-
   //push an answer (a function added into the component <Keyboard_input/>)
-  const handleSubmit = (inputValue) => {
+  const handleSubmit = (ans) => {
     axios({
       method: 'post',
       url: 'http://120.77.8.223:88/aphand_ans',
       data: {
-        "ans": inputValue,
-        "username": "???",
-        questionid
+        ans,
+        username: "???",
+        questionid,
       },
       headers: {
         'code': 'iknow'
@@ -58,7 +55,8 @@ export default function Knowledge_base() {
     })
   }
 
-  const handleLike = () => {
+  const handleLike = (questionid) => {
+    console.log(questionid)
     axios({
       method: 'post',
       url: 'http://120.77.8.223:88/aplike',
@@ -72,17 +70,44 @@ export default function Knowledge_base() {
     })
   }
 
+  const handlePushQues = (que) => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aphand_que',
+      data: {
+        username: 'whooo',
+        que,
+      }
+    }).then(() => {
+      alert("提交成功(待审核...)");
+      setPushFlag(false);
+      setPopup(false);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
   return (
     <div className={mod.background}>
       {
         popup
           ? <Fragment>
-            <Shady func={() => {
+            <Shady onclick={() => {
+              if (pushFlag) {
+                setPushFlag(false);
+              }
               setPopup(false);
             }} />
             <KeyboardInput
-              header={"回答问题"}
-              btnOnclick={handleSubmit}
+              header={pushFlag ? "提交问题" : "回答问题"}
+              btnOnclick={(inputValue) => {
+                if (pushFlag) {
+                  handlePushQues(inputValue);
+                }
+                else {
+                  handleSubmit(inputValue);
+                }
+              }}
             />
           </Fragment>
           : <Fragment />
@@ -90,20 +115,22 @@ export default function Knowledge_base() {
 
       {
         isloading
-          ? <Loading />
-          : <Content
+          ? <Fragment>
+            <Loading />
+          </Fragment>
+          :
+          <Content
             content={items}
+            handleAddLike={handleLike}
             handleAddAns={(msg) => {
+              setQuestionid(msg);
               setPopup(true);
-              getQuestionid(msg);
             }}
-            handleAddLike={(msg) => {
-              getQuestionid(msg);
-              handleLike();
+            handlePushQues={() => {
+              setPushFlag(true);
+              setPopup(true);
             }}
-            handleGetMsg={(msg) => {
-              toApp(msg);
-            }}
+            handleGetMsg={toApp}
           />
       }
     </div>
@@ -121,58 +148,61 @@ function Loading() {
 function Content(props) {
   const nevigate = useNavigate();
   return (
-    <ul>
-      {
-        props.content.map((item, index) => {
-          return (
-            <li
-              key={index}
-              onClick={() => {
-                props.handleGetMsg(item);
-                nevigate('/comment_area');
-              }}
-              id={item.questionid}
-            >
-              <div
-                className={mod.profile_img_wrapper}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}>
-                <img src="" alt="" />
-              </div>
-              <div
-                className={mod.username_wrapper}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}>
-                <span className={mod.span_0}>{item.username}</span>
-                <span className={mod.span_1}>最先提问:</span>
-                <span className={mod.span_2}>三天前</span>
-              </div>
-              <div className={mod.text_wrapper}>
-                <Text_box text={item.que} />
-              </div>
-              <div
-                className={mod.bottom_data_wrapper}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}>
-                <span
-                  onClick={() => {
-                    props.handleAddAns(item.questionid);
-                  }}
-                >我要回答</span>
-                <span>回答{item.ansnum}</span>
-                <span
-                  onClick={() => {
-                    props.handleAddLike(item.questionid);
-                  }}
-                >同问{item.great}</span>
-              </div>
-            </li>
-          )
-        })
-      }
-    </ul>
+    <div className={mod.list_wrapper}>
+      <FabMine onclick={props.handlePushQues} />
+      <ul>
+        {
+          props.content.map((item, index) => {
+            return (
+              <li
+                key={index}
+                onClick={() => {
+                  props.handleGetMsg(item);
+                  nevigate('/comment_area');
+                }}
+                id={item.questionid}
+              >
+                <div
+                  className={mod.profile_img_wrapper}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}>
+                  <img src="" alt="" />
+                </div>
+                <div
+                  className={mod.username_wrapper}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}>
+                  <span className={mod.span_0}>{item.username}</span>
+                  <span className={mod.span_1}>最先提问:</span>
+                  <span className={mod.span_2}>三天前</span>
+                </div>
+                <div className={mod.text_wrapper}>
+                  <TextBox text={item.que} />
+                </div>
+                <div
+                  className={mod.bottom_data_wrapper}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}>
+                  <span
+                    onClick={() => {
+                      props.handleAddAns(item.questionid);
+                    }}
+                  >我要回答</span>
+                  <span>回答{item.ansnum}</span>
+                  <span
+                    onClick={() => {
+                      props.handleAddLike(item.questionid);
+                    }}
+                  >同问{item.great}</span>
+                </div>
+              </li>
+            )
+          })
+        }
+      </ul>
+    </div>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import mod from './index.module.scss'
 
-export default function Text_box(props){
+export default function TextBox(props){
     return(
         <div className={mod.text_box_wrapper}>
             <div className={mod.shadow}></div> 

@@ -7,14 +7,14 @@ export default function Shady(props) {
         'backgroundColor': 'rgba(0,0,0,.29)',
         'position': 'fixed',
         'top': '0rem',
-        'zIndex': '1',
+        'zIndex': '2',
     }
 
     return (
         <div style={style} onClick={
-            props.func
+            props.onclick
         }>
-
+          
         </div>
     )
 } 
