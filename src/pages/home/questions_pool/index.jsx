@@ -6,18 +6,16 @@ import Shady from '../../../components/shady';
 import KeyboardInput from '../../../components/keyboard_input';
 import TextBox from '../../../components/text_box';
 import axios from 'axios';
-import MsgContext from '../../../context_manege';
 import FabMine from '../../../components/floating_action_button';
+import { connect } from 'react-redux';
+import { actions } from '../../../redux'
 
-export default function Knowledge_base() {
+function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);      //whether is loaded or not
   const [popup, setPopup] = useState(false);      //whether to render the input box or not
   const [items, setItems] = useState([]);        //a storage for the hots
   const [questionid, setQuestionid] = useState();
   const [pushFlag, setPushFlag] = useState(false);
-  // const skipToSubmiited = useNavigate();
-
-  const toApp = useContext(MsgContext);
 
   //get what`s hot
   useEffect(() => {
@@ -130,7 +128,7 @@ export default function Knowledge_base() {
               setPushFlag(true);
               setPopup(true);
             }}
-            handleGetMsg={toApp}
+            handleToCommentArea={props.sendAction}
           />
       }
     </div>
@@ -157,7 +155,7 @@ function Content(props) {
               <li
                 key={index}
                 onClick={() => {
-                  props.handleGetMsg(item);
+                  props.handleToCommentArea(item);
                   nevigate('/comment_area');
                 }}
                 id={item.questionid}
@@ -206,3 +204,13 @@ function Content(props) {
     </div>
   )
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    sendAction: (msg) => {
+      dispatch(actions.loadCommentArea(msg));
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Knowledge_base);

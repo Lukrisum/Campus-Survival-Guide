@@ -1,17 +1,19 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from 'axios';
 import mod from './index.module.scss';
-import MsgContext from "../../../../context_manege";
 import Spinner from "../../../../components/spinner";
 import KeyboardInput from "../../../../components/keyboard_input";
 import Shady from "../../../../components/shady";
 import TextBox from "../../../../components/text_box";
+import { connect } from "react-redux";
 
-export default function Comment_area() {
+const Comment_area = (props) => {
 
   //handle popup
   const [popup, setPopup] = useState(false);
-  const [msg, setMsg] = useState({});
+  const [msg, setMsg] = useState(props);
+
+  console.log(props);
 
   //handle answering
   const handleSubmit = (ans) => {
@@ -60,6 +62,7 @@ export default function Comment_area() {
           handlegetMsg={setMsg}
           handleSetPop={setPopup}
           handleAddLike={handleLike}
+          answerItems={props}
         />
       </div>
       <div className={mod.hr}></div>
@@ -67,7 +70,7 @@ export default function Comment_area() {
         <span className={mod.section_header}>相关回答</span>
       </div>
       <div className={mod.comments_wrapper}>
-        <Comments />
+        <Comments answerItemText={props} />
       </div>
 
       {
@@ -90,7 +93,7 @@ export default function Comment_area() {
 }
 
 function Content(props) {
-  const item = useContext(MsgContext);
+  const item = props;
 
   // ...  change this block to that based on network request
   const [storeItems, setstoreItems] = useState({});
@@ -107,9 +110,9 @@ function Content(props) {
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem('que_item', JSON.stringify(storeItems));
-  },[storeItems])
+  }, [storeItems])
 
   return (
     <Fragment>
@@ -147,8 +150,8 @@ function Content(props) {
   )
 }
 
-function Comments() {
-  const item = useContext(MsgContext);
+function Comments(props) {
+  const item = props;
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const enterFlag = item.questionid || item.questionid === 0;
@@ -220,3 +223,9 @@ function Loading() {
     </div>
   )
 }
+
+const mapStateToProps = (state) => {
+  return state;
+}
+
+export default connect(mapStateToProps, null)(Comment_area);
