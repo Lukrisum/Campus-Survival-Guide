@@ -5,7 +5,7 @@ export const types = {
 const initState = {
   "great": 0,
   "username": "001",
-  "que": "1+1=?",
+  "que": undefined,
   "ansnum": 2,
   "questionid": 1
 }
@@ -13,7 +13,7 @@ const initState = {
 export default function commentAreaReducer(state = initState, action) {
   switch (action.type) {
     case types.LOAD_QUESTION:
-      const { a, ...newState } = action;
+      const newState = action.value;
       return newState;
     default:
       return state;

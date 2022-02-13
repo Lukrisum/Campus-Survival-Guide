@@ -2,12 +2,13 @@ import mod from './index.module.scss';
 import Spinner from '../../../components/spinner';
 import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router';
+import UseAutocomplete from '../../../components/autocomplete_input';
 import axios from 'axios';
 
 export default function Knowledge_base() {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
-
+  
   useEffect(() => {
     axios.get('http://120.77.8.223:88/ques')
       .then(({ data }) => {
@@ -45,11 +46,12 @@ function Content(props) {
   return (
     <Fragment>
       <div className={mod.main_content_wrapper}>
-        <div className={mod.search_input_wrapper}>
+        <UseAutocomplete/>
+        {/* <div className={mod.search_input_wrapper}>
           <img src="" alt="搜索" />
           <input type="text" placeholder={'请输入问题关键字搜索'} />
           <img src="" alt="取消" />
-        </div>
+        </div> */}
         <div className={mod.section_nav_wrapper}>
           <div className={mod.div}>
             <div className={mod.section_nav}>

@@ -1,96 +1,123 @@
 .background {
-    width: 33.3rem;
-    height: 85%;
-    background-color: rgb(243, 151, 151);
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    .loader {
-        align-self: center;
-    }
-    .list_wrapper{
+  width: 100%;
+  height: 85%;
+  background-color: rgba(255, 255, 255, 1);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  .loader {
+    align-self: center;
+  }
+  .list_wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    ul {
       position: relative;
       display: inline-block;
-      width: 100%;
-      height: 100%;
-      padding: 0;                                              
+      list-style: none;
+      padding: 0;
       margin: 0;
-      ul {
+      width: 100%;
+      overflow: scroll;
+      height: 100%;
+      li {
         position: relative;
+        width: 33.3rem;
+        background-color: rgba(255, 255, 255, 1);
+        height: 13rem;
+        margin: 0 auto;
+        .profile_img_wrapper {
+          position: inherit;
+          width: 4.467rem;
+          height: 4.4rem;
+          background-color: rgb(255, 255, 255);
           display: inline-block;
-          list-style: none;
-          padding: 0;                                              
-          margin: 0;
-          width: 100%;
-          overflow: scroll;
-          height: 100%;
-          li {
-              position: relative;
-              width: 100%;
-              background-color: rgba(104, 104, 119, 0.3);
-              height: 13rem;
-              margin: 0.7rem 0;
-              .profile_img_wrapper {
-                  position: inherit;
-                  width: 4.467rem;
-                  height: 4.4rem;
-                  background-color: chartreuse;
-                  display: inline-block;
-              }
-              .username_wrapper {
-                  display: inline-block;
-                  justify-content: space-between;
-                  height: 4.4rem;
-                  width: 28.7rem;
-                  position: absolute;
-                  background-color: rgb(146, 75, 24);
-                  span {
-                      height: 100%;
-                      display: inline-block;
-                      background-color: darkcyan;
-                      width: 7rem;
-                      text-align: center;
-                      line-height: 3rem;
-                      font-family: Poppins;
-                      font-style: normal;
-                      font-weight: bold;
-                      font-size: 1.4rem;
-                      line-height: 4.1rem;
-                      color: rgba(124, 229, 212, 1);
-                      overflow: hidden;
-                  }
-                  .span_1 {
-                      text-align: left;
-                      width: 14.7rem;
-                  }
-                  .span_2 {
-                      float: right;
-                  }
-              }
-              .text_wrapper {
-                  display: inline-block;
-                  height: 6.7rem;
-                  width: 28.7rem;
-                  box-sizing: border-box;
-                  position: absolute;
-                  top: 4.4rem;
-                  padding-left: 1.3rem;
-                  background-color: rgb(221, 15, 15);
-              }
-              .bottom_data_wrapper {
-                  display: inline-block;
-                  position: absolute;
-                  bottom: 0rem;
-                  width: 28.7rem;
-                  height: 2rem;
-                  background-color: rgb(125, 125, 160);
-                  span {
-                      float: right;
-                      width: 6rem;
-                  }
-              }
+        }
+        .username_wrapper {
+          display: inline-block;
+          justify-content: space-between;
+          height: 4.4rem;
+          width: 28.7rem;
+          position: absolute;
+          background-color: rgba(255, 255, 255, 1);
+          span {
+            height: 100%;
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 1);
+            width: 7rem;
+            text-align: left;
+            line-height: 3rem;
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 1.4rem;
+            line-height: 4.1rem;
+            color: rgba(124, 229, 212, 1);
+            overflow: hidden;
           }
-      }  
+          .span_0 {
+            padding-left: 0.7rem;
+          }
+          .span_1 {
+            color: #99adb7;
+            text-align: left;
+          }
+          .span_2 {
+            float: right;
+            color: #99adb7;
+            width: auto;
+          }
+        }
+        .text_wrapper {
+          display: inline-block;
+          height: 6.7rem;
+          width: 28.7rem;
+          box-sizing: border-box;
+          position: absolute;
+          top: 4.4rem;
+          padding-left: 0.7rem;
+          background-color: rgba(255, 255, 255, 1);
+        }
+        .bottom_data_wrapper {
+          display: flex;
+          position: absolute;
+          justify-content: space-between;
+          bottom: 0rem;
+          height: 2rem;
+          width: 28.9rem;
+          right: 0;
+          background-color: rgb(255, 255, 255);
+          span {
+            display: inline-block;
+            height: 100%;
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 1.2rem;
+          }
+          .bottom_data_wrapper_ansnum {
+            padding-left: 0.7rem;
+            color: #99adb7;
+            font-size: 1.2rem;
+            line-height: 2rem;
+          }
+          .bottom_data_wrapper_great_wrapper {
+            display: flex;
+            .bottom_data_wrapper_great_wrapper_blank {
+              width: 2rem;
+            }
+            span {
+              color: #5c5b60;
+              padding-left: 0.5rem;
+            }
+          }
+        }
+      }
     }
+  }
 }

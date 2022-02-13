@@ -13,8 +13,6 @@ const Comment_area = (props) => {
   const [popup, setPopup] = useState(false);
   const [msg, setMsg] = useState(props);
 
-  console.log(props);
-
   //handle answering
   const handleSubmit = (ans) => {
     axios({
@@ -93,7 +91,7 @@ const Comment_area = (props) => {
 }
 
 function Content(props) {
-  const item = props;
+  const item = props.answerItems;
 
   // ...  change this block to that based on network request
   const [storeItems, setstoreItems] = useState({});
@@ -151,10 +149,10 @@ function Content(props) {
 }
 
 function Comments(props) {
-  const item = props;
+  const item = props.answerItemText;
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const enterFlag = item.questionid || item.questionid === 0;
+  const enterFlag = item.que || item.que === '';
   const questionid = enterFlag ? item.questionid : JSON.parse(localStorage.getItem('que_item')).questionid
 
   useEffect(() => {
