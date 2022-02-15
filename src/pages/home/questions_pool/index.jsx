@@ -100,6 +100,7 @@ function Knowledge_base(props) {
             }} />
             <KeyboardInput
               header={pushFlag ? "提交问题" : "回答问题"}
+              type={pushFlag ? true : false}
               btnOnclick={(inputValue) => {
                 if (pushFlag) {
                   handlePushQues(inputValue);
@@ -181,7 +182,8 @@ function Content(props) {
                   <span className={mod.span_2}>三天前</span>
                 </div>
                 <div className={mod.text_wrapper}>
-                  <TextBox text={item.que} />
+                  {/* <TextBox text={item.que} type={false}/> */}
+                  <TextBox text={item.que} type={false} />
                 </div>
                 <div
                   className={mod.bottom_data_wrapper}

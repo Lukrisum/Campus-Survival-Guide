@@ -1,19 +1,18 @@
 .keyboard_input_wrapper {
-    height: 15.5rem;
-    width: 37.5rem;
+    height: 20rem;
+    width: 100%;
     box-sizing: border-box;
     background-color: rgb(255, 255, 255);
-    border-radius: 20px 20px 0px 0px;
-    position: fixed;
-    bottom: 0;
-    overflow: scroll;
-    padding: 1.5rem;
+    border-radius: 2rem 2rem 0 0;
+    position:fixed;
+    bottom: 24rem;
+    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
     z-index: 2;
     span {
         font-family: Roboto;
         font-style: normal;
         font-weight: bold;
-        font-size: 16px;
+        font-size: 1.6rem;
         line-height: 19px;
         color: #5c5b60;
     }
@@ -21,19 +20,34 @@
         padding: 0rem;
         padding-top: 0.3rem;
         box-sizing: border-box;
-        width: 34.5rem;
+        width: 100%;
         outline: none;
         border: none;
 
         font-family: Roboto;
         font-style: normal;
         font-weight: bold;
-        font-size: 14px;
-        line-height: 16px;
+        font-size: 1.4rem;
+        line-height: 1.6rem;
 
         color: #979797;
+        resize:none
     }
-    button {
+    .bottom_section{
+      .text_alert,.text_length{
+        margin-top: 1.8rem;
+        display: inline-block;
+      }
+      .text_length{
+        font-size: .9rem;
+      }
+      .text_alert{
+        font-size: .9rem;
+        color: red;
+      }
+      .submit{
+        display: block;
         float: right;
+      }  
     }
 }

@@ -1,121 +1,121 @@
 .background {
-    height: 85%;
-    background-color: rgb(255, 196, 226);
-    margin: 0 auto;
+  height: 850%;
+  background-color: rgb(255, 196, 226);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  .loader {
+    align-self: center;
+  }
+  .main_content_wrapper {
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-    .loader {
-        align-self: center;
+    align-items: center;
+    .search_input_wrapper {
+      display: flex;
+      padding: 0rem 0.1rem;
+      width: 28rem;
+      height: 4.4rem;
+      background: #ffffff;
+      border: 0.1rem solid #4fb2ff;
+      box-sizing: border-box;
+      box-shadow: 0rem 0.8rem 1.6rem rgba(62, 19, 77, 0.07);
+      border-radius: 0.2rem;
+      align-items: center;
+      justify-content: space-between;
+      input {
+        font-size: 1rem;
+        padding: 0rem 1rem;
+        height: 4rem;
+        padding: 0rem;
+        margin: 0rem;
+        border: none;
+        outline: none;
+      }
     }
-    .main_content_wrapper {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .search_input_wrapper {
-            display: flex;
-            padding: 0rem 0.1rem;
-            width: 28rem;
-            height: 4.4rem;
-            background: #ffffff;
-            border: 0.1rem solid #4fb2ff;
-            box-sizing: border-box;
-            box-shadow: 0rem 0.8rem 1.6rem rgba(62, 19, 77, 0.07);
-            border-radius: 0.2rem;
-            align-items: center;
-            justify-content: space-between;
-            input {
-                font-size: 1rem;
-                padding: 0rem 1rem;
-                height: 4rem;
-                padding: 0rem;
-                margin: 0rem;
-                border: none;
-                outline: none;
-            }
-        }
-        .section_nav_wrapper {
-            width: 33.3rem;
-            height: 19rem;
-            background-color: #4fb2ff;
-            text-align: center;
-            border-bottom: 0.1rem solid #000;
-            .div {
-                border: none;
-                display: inline-block;
-                margin: 0.2rem 1rem;
-                .section_nav {
-                    border: none;
-                    display: block;
-                    width: 7rem;
-                    height: 7rem;
-                    background-color: #4fb2ff;
-                    img {
-                        display: inline-block;
-                        height: 100%;
-                        width: 100%;
-                        border-radius: 50%;
-                        background-color: brown;
-                    }
-                }
-            }
-            div:after {
-                content: "";
-                clear: both;
-                display: block;
-                height: 0;
-                overflow: hidden;
-                visibility: hidden;
-            }
-        }
-    }
-    .hot_icon_wrapper {
-        width: 33.3rem;
-    }
-    .hot_ques_wrapper {
+    .section_nav_wrapper {
+      width: 33.3rem;
+      height: 19rem;
+      background-color: #4fb2ff;
+      text-align: center;
+      border-bottom: 0.1rem solid #000;
+      .div {
+        border: none;
         display: inline-block;
-        list-style: none;
-        padding: 0;
-        margin: 0 auto;
-        width: 33.3rem;
-        overflow: scroll;
-        height: 100%;
-        li {
+        margin: 0.2rem 1rem;
+        .section_nav {
+          border: none;
+          display: block;
+          width: 7rem;
+          height: 7rem;
+          background-color: #4fb2ff;
+          img {
+            display: inline-block;
+            height: 100%;
             width: 100%;
-            box-sizing: border-box;
-            background-color: rgba(104, 104, 119, 0.3);
-            margin-bottom: 1rem;
-            background-color: aqua;
-            padding: 0 0.3rem;
-            .hot_ques_top_info_wrapper {
-                width: 100%;
-                background-color: aquamarine;
-            }
-            .hot_ques_text_wrapper {
-                background-color: blueviolet;
-                .hot_ques_text_header {
-                    font-size: 1.7rem;
-                    display: block;
-                }
-                .hot_ques_text_content_wrapper {
-                    padding: 0.5rem 0rem;
-                    .hot_ques_text_content {
-                        display: -webkit-box;
-                        -webkit-box-orient: vertical;
-                        -webkit-line-clamp: 2;
-                        overflow: hidden;
-                        background-color: #4fb2ff;
-                        text-overflow: ellipsis;
-                        max-height: 3.2rem;
-                    }
-                }
-            }
-            .hot_ques_bottom_info_wrapper {
-                display: flex;
-                justify-content: flex-end;
-            }
+            border-radius: 50%;
+            background-color: brown;
+          }
         }
+      }
+      div:after {
+        content: "";
+        clear: both;
+        display: block;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+      }
     }
+  }
+  .hot_icon_wrapper {
+    width: 33.3rem;
+  }
+  .hot_ques_wrapper {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 33.3rem;
+    overflow: scroll;
+    height: 100%;
+    li {
+      width: 100%;
+      box-sizing: border-box;
+      background-color: rgba(104, 104, 119, 0.3);
+      margin-bottom: 1rem;
+      background-color: aqua;
+      padding: 0 0.3rem;
+      .hot_ques_top_info_wrapper {
+        width: 100%;
+        background-color: aquamarine;
+      }
+      .hot_ques_text_wrapper {
+        background-color: blueviolet;
+        .hot_ques_text_header {
+          font-size: 1.7rem;
+          display: block;
+        }
+        .hot_ques_text_content_wrapper {
+          padding: 0.5rem 0rem;
+          .hot_ques_text_content {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            background-color: #4fb2ff;
+            text-overflow: ellipsis;
+            max-height: 3.2rem;
+          }
+        }
+      }
+      .hot_ques_bottom_info_wrapper {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
 }

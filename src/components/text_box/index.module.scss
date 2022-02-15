@@ -31,7 +31,7 @@
     width: 0px;
     z-index: 2;
   }
-  .text_box {
+  .text_box_hidden {
     text-align: center;
     width: 21rem;
     height: 3.6rem;
@@ -40,6 +40,7 @@
     padding-right: 0.6rem;
     border-radius: 0.2rem;
     span {
+      background-color: rgb(255, 255, 255);
       width: 19rem;
       text-align: left;
       display: inline-block;
@@ -50,6 +51,27 @@
       font-style: normal;
       font-weight: bold;
       font-size: 1.4rem;
+    }
+  }
+  .text_box_showall{
+    text-align: center;
+    width: 21rem;
+    background-color: rgba(255, 255, 255, 1);
+    padding:0 0.3rem;
+    border-radius: 0.2rem;
+    span{
+      background-color: rgb(255, 255, 255);
+      width:20rem;
+      min-height: 2.2rem;
+      display: inline-block;
+      text-align: left;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 1.4rem;
+      word-wrap: break-word;
+      line-height: 140%;
+      padding:.5rem 0;
     }
   }
 }

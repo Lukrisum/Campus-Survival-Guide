@@ -6,12 +6,17 @@ import KeyboardInput from "../../../../components/keyboard_input";
 import Shady from "../../../../components/shady";
 import TextBox from "../../../../components/text_box";
 import { connect } from "react-redux";
+//
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import TextsmsIcon from '@material-ui/icons/Textsms';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 const Comment_area = (props) => {
 
   //handle popup
   const [popup, setPopup] = useState(false);
   const [msg, setMsg] = useState(props);
+  const [questionid, setQuestionid] = useState();
 
   //handle answering
   const handleSubmit = (ans) => {
@@ -117,30 +122,40 @@ function Content(props) {
       <ul className={mod.content_text_wrapper}>
         <li id={enterFlag ? item.questionid : storeItems.questionid}>
           <div className={mod.profile_img_wrapper}>
-            <img src="" alt="" />
+            {/* <img src="" alt="" /> */}
+            <AccountCircleIcon style={{ width: '100%', height: '100%' }} />
           </div>
           <div className={mod.username_wrapper}>
             <span className={mod.span_0}>{enterFlag ? item.username : storeItems.username}</span>
-            <span className={mod.span_1}>最先提问:</span>
+            <span className={mod.span_1}>最先提问</span>
             <span className={mod.span_2}>三天前</span>
           </div>
           <div className={mod.text_wrapper}>
-            <TextBox text={enterFlag ? item.que : storeItems.que} />
+            <TextBox text={enterFlag ? item.que : storeItems.que} type={true}/>
           </div>
           <div className={mod.bottom_data_wrapper}>
-            <span
-              onClick={() => {
-                props.handlegetMsg(enterFlag ? item : storeItems);
-                props.handleSetPop(true);
-              }}>我要回答</span>
-            <span>回答{enterFlag ? item.ansnum : storeItems.ansnum}</span>
-            <span onClick={() => {
-              props.handleAddLike(enterFlag ? item.questionid : storeItems.questionid);
-              setstoreItems({
-                ...storeItems,
-                great: storeItems.great + 1
-              });
-            }} >同问{enterFlag ? item.great : storeItems.great}</span>
+            <span className={mod.bottom_data_wrapper_ansnum}>已有{enterFlag ? item.ansnum : storeItems.ansnum}人回答</span>
+            <div className={mod.bottom_data_wrapper_great_wrapper}>
+              <div>
+                <ArrowDropUpIcon />
+                <span onClick={() => {
+                  props.handleAddLike(enterFlag ? item.questionid : storeItems.questionid);
+                  setstoreItems({
+                    ...storeItems,
+                    great: storeItems.great + 1
+                  });
+                }} >同问{enterFlag ? item.great : storeItems.great}</span>
+              </div>
+              <div className={mod.bottom_data_wrapper_great_wrapper_blank}></div>
+              <div>
+                <TextsmsIcon />
+                <span
+                  onClick={() => {
+                    props.handlegetMsg(enterFlag ? item : storeItems);
+                    props.handleSetPop(true);
+                  }}>回答</span>
+              </div>
+            </div>
           </div>
         </li>
       </ul>
@@ -175,42 +190,35 @@ function Comments(props) {
   }, [])
 
   return (
-    <div className={mod.comments_wrapper}>
-      <ul>
-        {
-          isLoading
-            ? <Loading />
-            : <Fragment>
-              {
-                items.map((item, index) => {
-                  return (
-                    <li className={mod.comments_content_wrapper} key={index}>
-                      <div className={mod.profile_info_wrapper}>
-                        <img src="" alt="" />
-                        <span>{item.username}</span>
-                      </div>
-                      <div className={mod.comments_text_wrapper}>
-                        <span>{item.ans}</span>
-                      </div>
-                      <div className={mod.great_icon_wrapper}>
-                        <div className={mod.great_icon_real_wrapper}>
-                          <img src="" alt="点赞icon" />
-                          <span>{item.great}</span>
-                          <img src="" alt="点踩icon" />
-                          <span>{item.bad}</span>
+        <ul>
+          {
+            isLoading
+              ? <Loading />
+              : <Fragment>
+                {
+                  items.map((item, index) => {
+                    return (
+                      <li className={mod.comments_content_wrapper} key={index}>
+                        <div className={mod.profile_info_wrapper}>
+                          {/* <img src="" alt="" /> */}
+                          <div className={mod.profile_info_wrapper_img}>
+                            <AccountCircleIcon style={{ width: "100%", height: "100%" }} />
+                          </div>
+                          <span>{item.username}</span>
                         </div>
-                      </div>
-                    </li>
-                  )
-                })
-              }
-              <li className={mod.comments_end_wrapper}>
-                暂无更多
-              </li>
-            </Fragment>
-        }
-      </ul>
-    </div>
+                        <div className={mod.comments_text_wrapper}>
+                          <span>{item.ans}</span>
+                        </div>
+                      </li>
+                    )
+                  })
+                }
+                <li className={mod.comments_end_wrapper}>
+                  暂无更多
+                </li>
+              </Fragment>
+          }
+        </ul>
   )
 }
 
