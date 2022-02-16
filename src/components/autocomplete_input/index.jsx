@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useAutocomplete } from '@mui/base/AutocompleteUnstyled';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
+import axios from 'axios';
 
 const Label = styled('label')({
   display: 'block',
@@ -34,38 +36,6 @@ const Listbox = styled('ul')(({ theme }) => ({
   },
 }));
 
-export default function UseAutocomplete() {
-  const {
-    getRootProps,
-    getInputLabelProps,
-    getInputProps,
-    getListboxProps,
-    getOptionProps,
-    groupedOptions,
-  } = useAutocomplete({
-    id: 'use-autocomplete-demo',
-    options: top100Films,
-    getOptionLabel: (option) => option.title,
-  });
-
-  return (
-    <div>
-      <div {...getRootProps()}>
-        <Label {...getInputLabelProps()}></Label>
-        <Input placeholder='搜索' {...getInputProps()} />
-      </div>
-      {groupedOptions.length > 0 ? (
-        <Listbox {...getListboxProps()}>
-          {groupedOptions.map((option, index) => (
-            <li {...getOptionProps({ option, index })}>{option.title}</li>
-          ))}
-        </Listbox>
-      ) : null}
-    </div>
-  );
-}
-
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 const top100Films = [
   { title: 'The Shawshank Redemption', year: 1994 },
   { title: 'The Godfather', year: 1972 },
@@ -192,3 +162,47 @@ const top100Films = [
   { title: '3 Idiots', year: 2009 },
   { title: 'Monty Python and the Holy Grail', year: 1975 },
 ];
+
+export default function UseAutocomplete() {
+  const [searchPool, setSerchPool] = useState();
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: 'http://120.77.8.223:88/ques',
+    }).then(res => {
+      setSerchPool(res.data.msg);
+    })
+  },[])
+
+  const {
+    getRootProps,
+    getInputLabelProps,
+    getInputProps,
+    getListboxProps,
+    getOptionProps,
+    groupedOptions,
+  } = useAutocomplete({
+    id: 'use-autocomplete-demo',
+    options: searchPool,
+    getOptionLabel: (option) => option.que,
+  });
+
+  return (
+    <div>
+      <div {...getRootProps()}>
+        <Label {...getInputLabelProps()}></Label>
+        <Input placeholder='搜索' {...getInputProps()} />
+      </div>
+      {groupedOptions.length > 0 ? (
+        <Listbox {...getListboxProps()}>
+          {groupedOptions.map((option, index) => (
+            <li {...getOptionProps({ option, index })}>{option.title}</li>
+          ))}
+        </Listbox>
+      ) : null}
+    </div>
+  );
+}
+
+// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top

@@ -1,14 +1,18 @@
+import React from 'react';
 import mod from './index.module.scss';
 import Spinner from '../../../components/spinner';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import UseAutocomplete from '../../../components/autocomplete_input';
 import axios from 'axios';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
+import Shady from '../../../components/shady';
+import EastIcon from '@mui/icons-material/East';
 
 export default function Knowledge_base() {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
-  
+
   useEffect(() => {
     axios.get('http://120.77.8.223:88/ques')
       .then(({ data }) => {
@@ -43,15 +47,117 @@ function Loading() {
 
 function Content(props) {
   const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState("");
+  const [searchItems, setSearchItems] = useState([]);
+  const [popup, setPopup] = useState(false);
+  const [loadList, setLoadList] = useState(false);
+  const inputElement = useRef();
+
+  const handleOnFocus = () => {
+    setLoadList(true);
+    setPopup(true);
+  }
+
+  const handleOnBlur = () => {
+    setSearchItems([]);
+    setLoadList(false);
+    setPopup(false);
+  }
+
+  const handleInput = (e) => {
+    setInputValue(e.target.value);
+  }
+
+  const handleSearch = (keywords) => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/search',
+      data: {
+        keywords,
+      }
+    }).then(res => {
+      setSearchItems(res.data.search);
+      console.log(searchItems)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  useEffect(() => {
+    if (inputValue && inputValue != 0) {
+      handleSearch(inputValue)
+    }
+    else{
+      setSearchItems([]);
+    }
+  }, [inputValue])
+
+  const handleClear = () => {
+    setInputValue('');
+    setSearchItems([]);
+  }
+
   return (
     <Fragment>
+      {
+        popup ? <Shady /> : <Fragment />
+      }
       <div className={mod.main_content_wrapper}>
-        <UseAutocomplete/>
-        {/* <div className={mod.search_input_wrapper}>
-          <img src="" alt="搜索" />
-          <input type="text" placeholder={'请输入问题关键字搜索'} />
-          <img src="" alt="取消" />
-        </div> */}
+        <div className={mod.search_wrapper}>
+          <div className={mod.search_input_wrapper}>
+            <label
+              className={mod.search_img_wrapper}
+              htmlFor={"search_input"}
+            >
+              <SearchIcon style={{
+                color: "rgba(79, 178, 255, 1)",
+                width: "2.3rem",
+                height: "2.3rem"
+              }} />
+            </label>
+            <input
+              type="text"
+              placeholder={'请输入问题关键字搜索'}
+              value={inputValue}
+              onChange={handleInput}
+              onFocus={handleOnFocus}
+              onBlur={handleOnBlur}
+              id={"search_input"}
+              ref={inputElement}
+            />
+            <div
+              className={mod.search_clear_wrapper}
+              onClick={handleClear}
+              onMouseDown={(event) => {
+                event.preventDefault()
+              }}
+            >
+              <ClearIcon style={{
+                color: "#ABA7AF",
+              }} />
+            </div>
+          </div>
+          {
+            loadList
+              ? <ul className={mod.search_result_wrapper}>
+                {
+                  searchItems.map((item, index) => {
+                    if (item.que && item.que != 0) {
+                      return (
+                        <li
+                          key={index}
+                        >
+                          <div className={mod.search_result_sign}></div>
+                          <span>{item.que}</span>
+                        </li>
+                      )
+                    }
+                  })
+                }
+              </ul>
+              : <Fragment />
+          }
+        </div>
         <div className={mod.section_nav_wrapper}>
           <div className={mod.div}>
             <div className={mod.section_nav}>
@@ -102,6 +208,7 @@ function Content(props) {
             <span>教学周历</span>
           </div>
         </div>
+        <div className={mod.hr}></div>
         <div className={mod.hot_icon_wrapper}>
           <img src="" alt="" />
           <span>热门问题</span>
