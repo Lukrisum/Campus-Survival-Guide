@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "antd-mobile": "^5.0.0-rc.27",
     "axios": "^0.25.0",
     "material-ui": "^0.20.2",
     "mincu-debug": "^2.3.3",

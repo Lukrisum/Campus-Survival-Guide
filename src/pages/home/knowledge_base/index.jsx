@@ -1,15 +1,17 @@
 import React from 'react';
 import mod from './index.module.scss';
 import Spinner from '../../../components/spinner';
-import { useState, useEffect, Fragment, useRef } from 'react';
+import { useState, useEffect, Fragment, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import Shady from '../../../components/shady';
-import { useThrottle,useDebounce } from '../../../utils/debounce';
+import { useDebounce } from '../../../utils/debounce';
+import { connect } from 'react-redux';
+import { actions } from '../../../redux'
 
-export default function Knowledge_base() {
+function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
 
@@ -31,7 +33,7 @@ export default function Knowledge_base() {
       {
         isloading
           ? <Loading />
-          : <Content content={items} />
+          : <Content content={items} handleToContent={props.sendAction}/>
       }
     </div>
   )
@@ -52,6 +54,12 @@ function Content(props) {
   const [popup, setPopup] = useState(false);
   const [loadList, setLoadList] = useState(false);
   const inputElement = useRef();
+  const [isSearching, setIsSearching] = useState(false);
+
+  const isSearch = useMemo(() => {
+
+    return true;
+  }, [])
 
   const handleOnFocus = () => {
     setLoadList(true);
@@ -69,6 +77,7 @@ function Content(props) {
   }
 
   const handleSearch = useDebounce((keywords) => {
+    setIsSearching(true);
     axios({
       method: 'post',
       url: 'http://120.77.8.223:88/search',
@@ -76,12 +85,14 @@ function Content(props) {
         keywords,
       }
     }).then(res => {
-      setSearchItems(res.data.search);
-      console.log("fasongqinqiu")
+      new Promise((resolve) => {
+        setIsSearching(false);
+        resolve();
+      }).then(setSearchItems(res.data.search))
     }).catch(error => {
       console.log(error)
     })
-  },1000)
+  }, 300)
 
   useEffect(() => {
     if (inputValue && inputValue != 0) {
@@ -141,11 +152,23 @@ function Content(props) {
             loadList
               ? <ul className={mod.search_result_wrapper}>
                 {
+                  isSearching
+                    ? <li>loading...</li>
+                    : <Fragment />
+                }
+                {
                   searchItems.map((item, index) => {
                     if (item.que && item.que != 0) {
                       return (
                         <li
                           key={index}
+                          onMouseDown={(event) => {
+                            event.preventDefault()
+                          }}          
+                          onClick={()=>{
+                            props.handleToContent(item);
+                            navigate('/knowledge_base_sort')
+                          }}  
                         >
                           <div className={mod.search_result_sign}></div>
                           <span>{item.que}</span>
@@ -214,14 +237,13 @@ function Content(props) {
           <span>热门问题</span>
         </div>
       </div>
-      <ContentAnsItems content={props.content} />
+      <ContentAnsItems content={props.content} handleToContent={props.sendAction}/>
     </Fragment>
   )
 }
 
 function ContentAnsItems(props) {
   const navigate = useNavigate();
-
   return (
     <ul className={mod.hot_ques_wrapper}>
       {props.content.map((item, index) => {
@@ -229,7 +251,8 @@ function ContentAnsItems(props) {
           <li
             key={index}
             onClick={() => {
-              navigate('/comment_area')
+              props.handleToContent(item);
+              navigate('/knowledge_base_sort')
             }}>
             <div className={mod.hot_ques_top_info_wrapper}>
               <img src="" alt="profile_photo" />
@@ -257,7 +280,7 @@ function ContentAnsItems(props) {
 
 function ContentAnsText(props) {
   const [answer, setAnswer] = useState();
-
+  console.log(props.content)
   useEffect(() => {
     axios({
       method: 'post',
@@ -276,3 +299,13 @@ function ContentAnsText(props) {
     </Fragment>
   )
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    sendAction: (msg) => {
+      dispatch(actions.loadCommentArea(msg));
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Knowledge_base);

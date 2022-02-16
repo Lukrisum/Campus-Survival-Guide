@@ -14,7 +14,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
-function Knowledge_base(props) {
+function Questions_pool(props) {
   const [isloading, setIsloading] = useState(true);      //whether is loaded or not
   const [popup, setPopup] = useState(false);      //whether to render the input box or not
   const [items, setItems] = useState([]);        //a storage for the hots
@@ -169,7 +169,6 @@ function Content(props) {
                   onClick={(e) => {
                     e.stopPropagation();
                   }}>
-                  {/* temp plan */}
                   <AccountCircleIcon style={{ width: '100%', height: '100%' }} />
                 </div>
                 <div
@@ -182,7 +181,6 @@ function Content(props) {
                   <span className={mod.span_2}>三天前</span>
                 </div>
                 <div className={mod.text_wrapper}>
-                  {/* <TextBox text={item.que} type={false}/> */}
                   <TextBox text={item.que} type={false} />
                 </div>
                 <div
@@ -236,4 +234,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Knowledge_base);
+export default connect(null, mapDispatchToProps)(Questions_pool);

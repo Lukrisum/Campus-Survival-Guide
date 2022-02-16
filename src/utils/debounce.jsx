@@ -1,4 +1,4 @@
-import {useRef,useEffect,useCallback} from "react";
+import { useRef, useEffect, useCallback } from "react";
 
 // 防抖
 export function useDebounce(fn, delay, dep = []) {
@@ -34,4 +34,3 @@ export function useThrottle(fn, delay, dep = []) {
     }
   }, dep)
 }
-
