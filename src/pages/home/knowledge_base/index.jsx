@@ -7,7 +7,7 @@ import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import Shady from '../../../components/shady';
-import EastIcon from '@mui/icons-material/East';
+import { useThrottle,useDebounce } from '../../../utils/debounce';
 
 export default function Knowledge_base() {
   const [isloading, setIsloading] = useState(true);
@@ -68,7 +68,7 @@ function Content(props) {
     setInputValue(e.target.value);
   }
 
-  const handleSearch = (keywords) => {
+  const handleSearch = useDebounce((keywords) => {
     axios({
       method: 'post',
       url: 'http://120.77.8.223:88/search',
@@ -77,17 +77,17 @@ function Content(props) {
       }
     }).then(res => {
       setSearchItems(res.data.search);
-      console.log(searchItems)
+      console.log("fasongqinqiu")
     }).catch(error => {
       console.log(error)
     })
-  }
+  },1000)
 
   useEffect(() => {
     if (inputValue && inputValue != 0) {
-      handleSearch(inputValue)
+      handleSearch(inputValue);
     }
-    else{
+    else {
       setSearchItems([]);
     }
   }, [inputValue])
