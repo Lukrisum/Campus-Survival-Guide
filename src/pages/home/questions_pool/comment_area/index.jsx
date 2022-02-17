@@ -13,12 +13,10 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 const Comment_area = (props) => {
 
-  //handle popup
   const [popup, setPopup] = useState(false);
   const [msg, setMsg] = useState(props);
-  const [questionid, setQuestionid] = useState();
 
-  //handle answering
+  //回答
   const handleSubmit = (ans) => {
     axios({
       url: 'http://120.77.8.223:88/aphand_ans',
@@ -33,7 +31,6 @@ const Comment_area = (props) => {
       }
     }).then((res) => {
       alert('提交成功(待审核...)');
-      console.log(res.data.answerid)
       setPopup(false);
     }).catch((error) => {
       console.log(error);

@@ -20,6 +20,7 @@ function Questions_pool(props) {
   const [items, setItems] = useState([]);        //a storage for the hots
   const [questionid, setQuestionid] = useState();
   const [pushFlag, setPushFlag] = useState(false);
+  const [ansnum, setAnsnum] = useState(null);
 
   //get what`s hot
   useEffect(() => {
@@ -35,8 +36,8 @@ function Questions_pool(props) {
       .catch(console.error)
   }, [])
 
-  //push an answer (a function added into the component <Keyboard_input/>)
-  const handleSubmit = (ans) => {
+  //回答 --> <Keyboard_input/>
+  const handlePushAns = (ans) => {
     axios({
       method: 'post',
       url: 'http://120.77.8.223:88/aphand_ans',
@@ -48,28 +49,29 @@ function Questions_pool(props) {
       headers: {
         'code': 'iknow'
       }
-    }).then((res) => {
-      alert("提交成功(待审核...)");
+    }).then(() => {
+      alert("提交成功(审核ing...)");
       setPopup(false);
+      handleGetAnsnum(questionid);
     }).catch((error) => {
       console.log(error)
     })
   }
 
-  const handleLike = (questionid) => {
+  //当前回答人数
+  const handleGetAnsnum = (questionid) => {
     axios({
       method: 'post',
-      url: 'http://120.77.8.223:88/aplike',
+      url: 'http://120.77.8.223:88/apans',
       data: {
         questionid,
       }
-    }).then((res) => {
-      alert(res.data.msg);
-    }).catch((error) => {
-      console.log(error)
+    }).then(({ data }) => {
+      setAnsnum(data.msg.length);
     })
   }
 
+  //提问 --> <Keyboard_input/>
   const handlePushQues = (que) => {
     axios({
       method: 'post',
@@ -79,7 +81,7 @@ function Questions_pool(props) {
         que,
       }
     }).then(() => {
-      alert("提交成功(待审核...)");
+      alert("提交成功(审核ing...)");
       setPushFlag(false);
       setPopup(false);
     }).catch((error) => {
@@ -106,7 +108,7 @@ function Questions_pool(props) {
                   handlePushQues(inputValue);
                 }
                 else {
-                  handleSubmit(inputValue);
+                  handlePushAns(inputValue);
                 }
               }}
             />
@@ -122,8 +124,8 @@ function Questions_pool(props) {
           :
           <Content
             content={items}
-            handleAddLike={handleLike}
-            handleAddAns={(msg) => {
+            handleToCommentArea={props.sendAction}
+            handlePushAns={(msg) => {
               setQuestionid(msg);
               setPopup(true);
             }}
@@ -131,7 +133,10 @@ function Questions_pool(props) {
               setPushFlag(true);
               setPopup(true);
             }}
-            handleToCommentArea={props.sendAction}
+            ansnum={{
+              ansnum,
+              questionid
+            }}
           />
       }
     </div>
@@ -148,7 +153,6 @@ function Loading() {
 
 function Content(props) {
   const nevigate = useNavigate();
-
   return (
     <div className={mod.list_wrapper}>
       <FabMine onclick={props.handlePushQues} />
@@ -183,28 +187,7 @@ function Content(props) {
                 <div className={mod.text_wrapper}>
                   <TextBox text={item.que} type={false} />
                 </div>
-                <div
-                  className={mod.bottom_data_wrapper}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}>
-                  <span className={mod.bottom_data_wrapper_ansnum}>已有{item.ansnum}人回答</span>
-                  <div className={mod.bottom_data_wrapper_great_wrapper}>
-                    <div>
-                      <ArrowDropUpIcon />
-                      <LikeSpan great={item.great} questionid={item.questionid} handleAddLike={props.handleAddLike} />
-                    </div>
-                    <div className={mod.bottom_data_wrapper_great_wrapper_blank}></div>
-                    <div>
-                      <TextsmsIcon />
-                      <span
-                        onClick={() => {
-                          props.handleAddAns(item.questionid);
-                        }}
-                      >回答</span>
-                    </div>
-                  </div>
-                </div>
+                <DataBar data={item} handlePushAns={props.handlePushAns} ansnum={props.ansnum} />
               </li>
             )
           })
@@ -214,15 +197,64 @@ function Content(props) {
   )
 }
 
-function LikeSpan(props) {
-  const [likes, setLikes] = useState(props.great);
+//动态更新的数据
+function DataBar(props) {
+  const item = props.data;
+  const [ansnum, setAnsnum] = useState(item.ansnum);
+  const [likes, setLikes] = useState(item.great);
+  const ansnumMsg = props.ansnum;
+
+  //检查问题是否被回答
+  useEffect(() => {
+    if (ansnumMsg?.questionid == item.questionid && ansnumMsg.ansnum != null) {
+      setAnsnum(ansnumMsg.ansnum);
+    }
+  }, [props.ansnum])
+
+  //点赞
+  const handleLike = (questionid) => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aplike',
+      data: {
+        questionid,
+      }
+    }).then((res) => {
+      alert(res.data.msg);
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
   return (
-    <span
-      onClick={() => {
-        props.handleAddLike(props.questionid);
-        setLikes(likes + 1);
-      }}
-    >同问{likes}</span>
+    <div
+      className={mod.bottom_data_wrapper}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}>
+      <span className={mod.bottom_data_wrapper_ansnum}>已有{ansnum}人回答</span>
+      <div className={mod.bottom_data_wrapper_great_wrapper}>
+        <div>
+          <ArrowDropUpIcon />
+          <span
+            onClick={() => {
+              handleLike(item.questionid);
+              setLikes(likes + 1);
+            }}
+          >同问{likes}
+          </span>
+        </div>
+        <div className={mod.bottom_data_wrapper_great_wrapper_blank}></div>
+        <div>
+          <TextsmsIcon />
+          <span
+            onClick={() => {
+              props.handlePushAns(item.questionid);
+            }}
+          >回答</span>
+        </div>
+      </div>
+    </div>
   )
 }
 

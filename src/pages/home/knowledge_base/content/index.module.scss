@@ -37,6 +37,13 @@
     flex-grow: 1;
     padding: 1rem 0 1rem 0;
     font-size: 1.4rem;
+    display: flex;
+    .loading{
+      font-style:italic;
+      font-weight: bolder;
+      font-size: 2rem;
+      color: #7e76765d;
+    }
     span {
       display: inline-block;
       line-height: 140%;

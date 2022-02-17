@@ -1,0 +1,191 @@
+.background {
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  .loader {
+    align-self: center;
+  }
+  .main_content_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .search_wrapper {
+      width: 28rem;
+      position: relative;
+      z-index:114511;
+      .search_input_wrapper {
+        display: flex;
+        padding: 0rem 0.1rem;
+        width: 28rem;
+        height: 4rem;
+        background: #ffffff;
+        border: 0.1rem solid #4fb2ff;
+        box-sizing: border-box;
+        box-shadow: 0rem 0.8rem 1.6rem rgba(62, 19, 77, 0.07);
+        border-radius: 0.2rem;
+        align-items: center;
+        justify-content: space-between;
+        .search_img_wrapper {
+          display:block;
+          width: 3.3rem;
+          text-align: center;
+          line-height: 0rem;
+        }
+        input{
+          font-size: 1.4rem;
+          height: 4rem;
+          padding-right: 0rem 2rem;
+          margin: 0rem;
+          border: none;
+          outline: none;
+          flex-grow: 1;
+          background-color: rgba(255, 255, 255, 0);
+
+          font-family: Caladea;
+          font-style: normal;
+          font-weight: bold;
+          color: #aba7af;
+        }
+        .search_clear_wrapper {
+          display:block;
+          text-align: center;
+          width: 3.3rem;
+          line-height: 0rem;
+        }
+      }
+      ul {
+        list-style: none;
+        padding: 0rem;
+        margin: 0;
+        position: fixed;
+        width: 28rem;
+        box-sizing: border-box;
+        li {
+          padding-left: 2rem;
+          background-color: #ffffff;
+          border: 0.1rem solid #4fb2ff;
+          border-top: none;
+          height: 4rem;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          .search_result_sign {
+            width: 1.2rem;
+            height: 1.2rem;
+            background: #ffffff;
+            border: 0.1rem solid #4fb2ff;
+            box-sizing: border-box;
+            border-radius: 4px;
+            margin-right: 2rem;
+            background-color: #ffffff;
+          }
+          span {
+            display: inline-block;
+            width: 17rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 1.4rem;
+            line-height: 140%;
+            color: #4fb2ff;
+          }
+        }
+      }
+    }
+  }
+  .hr {
+    width: 33.3rem;
+    height: 0.1px;
+    border: 1px solid #efefef;
+  }
+  .hot_icon_wrapper {
+    width: 33.3rem;
+    span {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 1.4rem;
+      line-height: 140%;
+      color: #ff0000;
+    }
+  }
+  .hot_ques_wrapper {
+    // display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 33.3rem;
+    overflow: scroll;
+    flex-grow: 1;
+    box-sizing: border-box;
+    li {
+      width: 100%;
+      box-sizing: border-box;
+      background-color: rgba(104, 104, 119, 0.3);
+      margin-bottom: 1rem;
+      background-color: rgb(255, 255, 255);
+      padding: 0 0.3rem;
+      .hot_ques_top_info_wrapper {
+        width: 100%;
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        align-items: center;
+        padding:.5rem 0 .3rem 0;
+        img{
+          width: 2em;
+          height: 2rem;
+        }
+        span{
+          padding-left: .5rem;
+          color:#aba7af;
+        }
+      }
+      .hot_ques_text_wrapper {
+        background-color: rgb(255, 255, 255);
+        .hot_ques_text_header {
+          font-size: 1.7rem;
+          display: block;
+          padding-top:.3.5rem;
+        }
+        .hot_ques_text_content_wrapper {
+          padding: 0.5rem 0rem;
+          .hot_ques_text_content {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            background-color: #ffffff;
+            text-overflow: ellipsis;
+            max-height: 39rem;
+          }
+        }
+      }
+      .hot_ques_bottom_info_wrapper {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+    .hot_ques_bottom_blank{
+      background-color: rgba(0,0,0,0);
+      text-align: center;
+      height: 6.7rem;
+      span{
+          text-align: center;
+          font-family: Poppins;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 1.2rem;
+          line-height: 140%;
+          color: #99adb7;  
+      }
+    }
+  }
+}

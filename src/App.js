@@ -5,7 +5,8 @@ import Questions_pool from "./pages/home/questions_pool";
 import Comment_area from "./pages/home/questions_pool/comment_area";
 import { Provider } from "react-redux";
 import store from "./store";
-import Knowledge_base_sort from "./pages/home/knowledge_base/knowledge_base_sort";
+import Content from "./pages/home/knowledge_base/content";
+import Sorts from "./pages/home/knowledge_base/sorts";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
             <Route path='/knowledge_base/' element={<Knowledge_base />}></Route>
           </Route>
           <Route path='/comment_area' element={<Comment_area />}></Route>
-          <Route path='/knowledge_base_sort' element={<Knowledge_base_sort/>}></Route>
+          <Route path='/knowledge_base_content' element={<Content/>}></Route>
+          <Route path='/knowledge_base_sorts' element={<Sorts/>}></Route>
         </Routes>
       </div>
     </Provider>

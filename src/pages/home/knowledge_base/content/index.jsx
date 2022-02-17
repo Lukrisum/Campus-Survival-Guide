@@ -3,9 +3,8 @@ import mod from './index.module.scss'
 import { connect } from 'react-redux';
 import axios from "axios";
 import profileImg from "../../../../assets/images/ncuhome.jpg"
-import Spinner from "../../../../components/spinner";
 
-function Knowledge_base_sort(props) {
+function Content(props) {
   const [ans, setAns] = useState();
   const [isLoading,setIsloading] = useState(true);
 
@@ -32,11 +31,9 @@ function Knowledge_base_sort(props) {
       <div className={mod.text_wrapper}>
       {
         isLoading
-        ?<Spinner/>
+        ?<span className={mod.loading}>加载中...</span>
         :<span dangerouslySetInnerHTML={{__html:`${ans}`}}></span>
-
       }
-        {/* <span dangerouslySetInnerHTML={{__html:`${ans}`}}></span> */}
       </div>
     </div>
   )
@@ -46,4 +43,4 @@ const mapStateToProps = (state) => {
   return state;
 }
 
-export default connect(mapStateToProps, null)(Knowledge_base_sort);
+export default connect(mapStateToProps, null)(Content);

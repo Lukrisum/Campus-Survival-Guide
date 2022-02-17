@@ -1,33 +1,31 @@
 import React from 'react';
 import mod from './index.module.scss';
-import Spinner from '../../../components/spinner';
-import { useState, useEffect, Fragment, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router';
+import Spinner from '../../../../components/spinner';
+import { useState, useEffect, Fragment, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import Shady from '../../../components/shady';
-import { useDebounce } from '../../../utils/debounce';
+import Shady from '../../../../components/shady';
+import { useDebounce } from '../../../../utils/debounce';
 import { connect } from 'react-redux';
-import { actions } from '../../../redux'
-import profileImg from '../../../assets/images/ncuhome.jpg'
+import { actions } from '../../../../redux'
+import profileImg from '../../../../assets/images/ncuhome.jpg'
 
-function Knowledge_base(props) {
+axios.defaults.baseURL = "http://120.77.8.223:88";
+
+function Sorts(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
-    axios.get('http://120.77.8.223:88/hot')
+    axios.get(location.state.api)
       .then(({ data }) => {
-        const addList = (preList) => {
-          const newList = preList.concat(data.msg);
-          return newList;
-        }
-        setItems(addList(items))
+        setItems(data.msg);
         setIsloading(false);
       })
-      .catch(console.error)
-  }, [])
+  }, [location])
 
   return (
     <div className={mod.background}>
@@ -167,68 +165,6 @@ function Content(props) {
               : <Fragment />
           }
         </div>
-        <div className={mod.section_nav_wrapper}>
-          <div className={mod.div}>
-            <div className={mod.section_nav}>
-              <img 
-                src="" 
-                alt="迎新" 
-                onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/new/ques"}});
-                }} 
-                />
-            </div>
-            <span>迎新</span>
-          </div>
-          <div className={mod.div}>
-            <div className={mod.section_nav}>
-              <img src="" alt="学习" onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/study/ques"}});
-                }} />
-            </div>
-            <span>学习</span>
-          </div>
-          <div className={mod.div}>
-            <div className={mod.section_nav}>
-              <img src="" alt="生活" onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/life/ques"}});
-                }} />
-            </div>
-            <span>生活</span>
-          </div>
-          <div className={mod.div}>
-            <div className={mod.section_nav}>
-              <img src="" alt="行政" onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/admin/ques"}});
-                }} />
-            </div>
-            <span>行政</span>
-          </div>
-          <div className={mod.div}>
-            <div className={mod.section_nav}>
-              <img src="" alt="网址号码" onClick={() => {
-                  navigate('/knowledge_base_sorts');
-                }} />
-            </div>
-            <span>网址号码</span>
-          </div>
-          <div className={mod.div}>
-            <div className={mod.section_nav}>
-              <img
-                src=""
-                alt="教学周历"
-                onClick={() => {
-                  navigate('/knowledge_base_sorts');
-                }} />
-            </div>
-            <span>教学周历</span>
-          </div>
-        </div>
-        <div className={mod.hr}></div>
-        <div className={mod.hot_icon_wrapper}>
-          <img src="" alt="" />
-          <span>热门问题</span>
-        </div>
       </div>
       <ContentAnsItems content={props.content} handleToContent={props.handleToContent} />
     </Fragment>
@@ -301,4 +237,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Knowledge_base);
+export default connect(null, mapDispatchToProps)(Sorts);
