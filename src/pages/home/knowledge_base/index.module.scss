@@ -1,10 +1,11 @@
 .background {
-  height: 850%;
-  background-color: rgb(255, 196, 226);
+  height: 100%;
+  background-color: rgb(255, 255, 255);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
   .loader {
     align-self: center;
@@ -103,7 +104,12 @@
       width: 33.3rem;
       height: 19rem;
       background-color: #ffffff;
+      padding-top: 1rem;
       text-align: center;
+      display:flex;
+      flex-wrap: wrap;
+      width: 32rem;
+      justify-content: space-between;
       .div {
         border: none;
         display: inline-block;
@@ -111,7 +117,6 @@
         .section_nav {
           border: none;
           display: block;
-          padding-top: 0.5rem;
           width: 7rem;
           height: 7rem;
           background-color: #ffffff;
@@ -151,29 +156,42 @@
     }
   }
   .hot_ques_wrapper {
-    display: inline-block;
+    // display: inline-block;
     list-style: none;
     padding: 0;
     margin: 0 auto;
     width: 33.3rem;
     overflow: scroll;
-    height: 100%;
+    flex-grow: 1;
+    box-sizing: border-box;
     li {
       width: 100%;
       box-sizing: border-box;
       background-color: rgba(104, 104, 119, 0.3);
       margin-bottom: 1rem;
-      background-color: aqua;
+      background-color: rgb(255, 255, 255);
       padding: 0 0.3rem;
       .hot_ques_top_info_wrapper {
         width: 100%;
-        background-color: aquamarine;
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        align-items: center;
+        padding:.5rem 0 .3rem 0;
+        img{
+          width: 2em;
+          height: 2rem;
+        }
+        span{
+          padding-left: .5rem;
+          color:#aba7af;
+        }
       }
       .hot_ques_text_wrapper {
-        background-color: blueviolet;
+        background-color: rgb(255, 255, 255);
         .hot_ques_text_header {
           font-size: 1.7rem;
           display: block;
+          padding-top:.3.5rem;
         }
         .hot_ques_text_content_wrapper {
           padding: 0.5rem 0rem;
@@ -182,15 +200,29 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden;
-            background-color: #4fb2ff;
+            background-color: #ffffff;
             text-overflow: ellipsis;
-            max-height: 3.2rem;
+            max-height: 39rem;
           }
         }
       }
       .hot_ques_bottom_info_wrapper {
         display: flex;
         justify-content: flex-end;
+      }
+    }
+    .hot_ques_bottom_blank{
+      background-color: rgba(0,0,0,0);
+      text-align: center;
+      height: 6.7rem;
+      span{
+          text-align: center;
+          font-family: Poppins;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 1.2rem;
+          line-height: 140%;
+          color: #99adb7;  
       }
     }
   }

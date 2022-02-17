@@ -1,22 +1,23 @@
-import React, { useMemo, useState } from "react";
+import React, {useState} from "react";
 import mod from './index.module.scss'
 import { connect } from 'react-redux';
-import { useEffect } from "react";
 import axios from "axios";
+import profileImg from "../../../../assets/images/ncuhome.jpg"
+import Spinner from "../../../../components/spinner";
 
 function Knowledge_base_sort(props) {
-  console.log(props);
-  const [a, seta] = useState();
+  const [ans, setAns] = useState();
+  const [isLoading,setIsloading] = useState(true);
 
   axios({
     method: 'post',
     url: "http://120.77.8.223:88/ans",
     data: {
-      questionid: props.questionid + 5
+      questionid: props.questionid
     }
   }).then((res) => {
-    // seta(data.msg.ans);
-    seta(res.data.msg[0].ans)
+    setAns(res.data.msg[0].ans);
+    setIsloading(false);
   })
 
   return (
@@ -25,13 +26,17 @@ function Knowledge_base_sort(props) {
         <span>{props.que}</span>
       </div>
       <div className={mod.profile_wrapper}>
-        <img src="" alt="小家园" />
-        <span>{props.username + ":"}</span>
+        <img src={profileImg} alt="小家园" />
+        <span>{props.username + "："}</span>
       </div>
       <div className={mod.text_wrapper}>
-        <span>
-          {a}
-        </span>
+      {
+        isLoading
+        ?<Spinner/>
+        :<span dangerouslySetInnerHTML={{__html:`${ans}`}}></span>
+
+      }
+        {/* <span dangerouslySetInnerHTML={{__html:`${ans}`}}></span> */}
       </div>
     </div>
   )

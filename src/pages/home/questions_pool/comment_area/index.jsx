@@ -122,7 +122,6 @@ function Content(props) {
       <ul className={mod.content_text_wrapper}>
         <li id={enterFlag ? item.questionid : storeItems.questionid}>
           <div className={mod.profile_img_wrapper}>
-            {/* <img src="" alt="" /> */}
             <AccountCircleIcon style={{ width: '100%', height: '100%' }} />
           </div>
           <div className={mod.username_wrapper}>
@@ -134,7 +133,7 @@ function Content(props) {
             <TextBox text={enterFlag ? item.que : storeItems.que} type={true}/>
           </div>
           <div className={mod.bottom_data_wrapper}>
-            <span className={mod.bottom_data_wrapper_ansnum}>已有{enterFlag ? item.ansnum : storeItems.ansnum}人回答</span>
+            <span className={mod.bottom_data_wrapper_ansnum}>已有{storeItems.ansnum}人回答</span>
             <div className={mod.bottom_data_wrapper_great_wrapper}>
               <div>
                 <ArrowDropUpIcon />
@@ -144,7 +143,7 @@ function Content(props) {
                     ...storeItems,
                     great: storeItems.great + 1
                   });
-                }} >同问{enterFlag ? item.great : storeItems.great}</span>
+                }} >同问{storeItems.great}</span>
               </div>
               <div className={mod.bottom_data_wrapper_great_wrapper_blank}></div>
               <div>

@@ -3,11 +3,11 @@ export const types = {
 }
 
 const initState = {
-  "great": 0,
-  "username": "001",
+  "great": undefined,
+  "username": undefined,
   "que": undefined,
-  "ansnum": 2,
-  "questionid": 1
+  "ansnum": undefined,
+  "questionid": undefined
 }
 
 export default function commentAreaReducer(state = initState, action) {

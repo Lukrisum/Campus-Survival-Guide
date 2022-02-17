@@ -10,13 +10,14 @@ import Shady from '../../../components/shady';
 import { useDebounce } from '../../../utils/debounce';
 import { connect } from 'react-redux';
 import { actions } from '../../../redux'
+import profileImg from '../../../assets/images/ncuhome.jpg'
 
 function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    axios.get('http://120.77.8.223:88/ques')
+    axios.get('http://120.77.8.223:88/hot')
       .then(({ data }) => {
         const addList = (preList) => {
           const newList = preList.concat(data.msg);
@@ -33,7 +34,7 @@ function Knowledge_base(props) {
       {
         isloading
           ? <Loading />
-          : <Content content={items} handleToContent={props.sendAction}/>
+          : <Content content={items} handleToContent={props.sendAction} />
       }
     </div>
   )
@@ -54,12 +55,6 @@ function Content(props) {
   const [popup, setPopup] = useState(false);
   const [loadList, setLoadList] = useState(false);
   const inputElement = useRef();
-  const [isSearching, setIsSearching] = useState(false);
-
-  const isSearch = useMemo(() => {
-
-    return true;
-  }, [])
 
   const handleOnFocus = () => {
     setLoadList(true);
@@ -77,7 +72,6 @@ function Content(props) {
   }
 
   const handleSearch = useDebounce((keywords) => {
-    setIsSearching(true);
     axios({
       method: 'post',
       url: 'http://120.77.8.223:88/search',
@@ -85,10 +79,7 @@ function Content(props) {
         keywords,
       }
     }).then(res => {
-      new Promise((resolve) => {
-        setIsSearching(false);
-        resolve();
-      }).then(setSearchItems(res.data.search))
+      setSearchItems(res.data.search)
     }).catch(error => {
       console.log(error)
     })
@@ -152,23 +143,18 @@ function Content(props) {
             loadList
               ? <ul className={mod.search_result_wrapper}>
                 {
-                  isSearching
-                    ? <li>loading...</li>
-                    : <Fragment />
-                }
-                {
-                  searchItems.map((item, index) => {
+                  searchItems?.map((item, index) => {
                     if (item.que && item.que != 0) {
                       return (
                         <li
                           key={index}
                           onMouseDown={(event) => {
                             event.preventDefault()
-                          }}          
-                          onClick={()=>{
+                          }}
+                          onClick={() => {
                             props.handleToContent(item);
                             navigate('/knowledge_base_sort')
-                          }}  
+                          }}
                         >
                           <div className={mod.search_result_sign}></div>
                           <span>{item.que}</span>
@@ -237,7 +223,7 @@ function Content(props) {
           <span>热门问题</span>
         </div>
       </div>
-      <ContentAnsItems content={props.content} handleToContent={props.sendAction}/>
+      <ContentAnsItems content={props.content} handleToContent={props.handleToContent} />
     </Fragment>
   )
 }
@@ -255,7 +241,7 @@ function ContentAnsItems(props) {
               navigate('/knowledge_base_sort')
             }}>
             <div className={mod.hot_ques_top_info_wrapper}>
-              <img src="" alt="profile_photo" />
+              <img src={profileImg} alt="profile_photo" />
               <span> {item.username}</span>
             </div>
             <div className={mod.hot_ques_text_wrapper}>
@@ -266,21 +252,21 @@ function ContentAnsItems(props) {
                 </span>
               </div>
             </div>
-            <div className={mod.hot_ques_bottom_info_wrapper}>
-              <span>点赞数:{item.great}</span>
-              <br />
-              <span>回复数:{item.ansnum}</span>
-            </div>
+            <div className={mod.hot_ques_bottom_info_wrapper}></div>
           </li>
         )
       })}
+      <li className={mod.hot_ques_bottom_blank}>
+        <span>
+          暂无更多
+        </span>
+      </li>
     </ul>
   )
 }
 
 function ContentAnsText(props) {
   const [answer, setAnswer] = useState();
-  console.log(props.content)
   useEffect(() => {
     axios({
       method: 'post',
@@ -295,7 +281,7 @@ function ContentAnsText(props) {
 
   return (
     <Fragment>
-      {answer}
+      <span dangerouslySetInnerHTML={{__html:answer}} ></span>
     </Fragment>
   )
 }
