@@ -127,7 +127,7 @@ function Content(props) {
             <span className={mod.span_2}>三天前</span>
           </div>
           <div className={mod.text_wrapper}>
-            <TextBox text={enterFlag ? item.que : storeItems.que} type={true}/>
+            <TextBox text={enterFlag ? item.que : storeItems.que} type={true} />
           </div>
           <div className={mod.bottom_data_wrapper}>
             <span className={mod.bottom_data_wrapper_ansnum}>已有{storeItems.ansnum}人回答</span>
@@ -186,35 +186,35 @@ function Comments(props) {
   }, [])
 
   return (
-        <ul>
-          {
-            isLoading
-              ? <Loading />
-              : <Fragment>
-                {
-                  items.map((item, index) => {
-                    return (
-                      <li className={mod.comments_content_wrapper} key={index}>
-                        <div className={mod.profile_info_wrapper}>
-                          {/* <img src="" alt="" /> */}
-                          <div className={mod.profile_info_wrapper_img}>
-                            <AccountCircleIcon style={{ width: "100%", height: "100%" }} />
-                          </div>
-                          <span>{item.username}</span>
-                        </div>
-                        <div className={mod.comments_text_wrapper}>
-                          <span>{item.ans}</span>
-                        </div>
-                      </li>
-                    )
-                  })
-                }
-                <li className={mod.comments_end_wrapper}>
-                  暂无更多
-                </li>
-              </Fragment>
-          }
-        </ul>
+    <ul>
+      {
+        isLoading
+          ? <Loading />
+          : <Fragment>
+            {
+              items.map((item, index) => {
+                return (
+                  <li className={mod.comments_content_wrapper} key={index}>
+                    <div className={mod.profile_info_wrapper}>
+                      {/* <img src="" alt="" /> */}
+                      <div className={mod.profile_info_wrapper_img}>
+                        <AccountCircleIcon style={{ width: "100%", height: "100%" }} />
+                      </div>
+                      <span>{item.username}</span>
+                    </div>
+                    <div className={mod.comments_text_wrapper}>
+                      <span>{item.ans}</span>
+                    </div>
+                  </li>
+                )
+              })
+            }
+            <li className={mod.comments_end_wrapper}>
+              暂无更多
+            </li>
+          </Fragment>
+      }
+    </ul>
   )
 }
 

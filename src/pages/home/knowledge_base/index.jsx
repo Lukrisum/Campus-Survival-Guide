@@ -170,45 +170,45 @@ function Content(props) {
         <div className={mod.section_nav_wrapper}>
           <div className={mod.div}>
             <div className={mod.section_nav}>
-              <img 
-                src="" 
-                alt="迎新" 
+              <img
+                src=""
+                alt="迎新"
                 onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/new/ques"}});
-                }} 
-                />
+                  navigate('/knowledge_base_sorts', { state: { api: "/new/ques" } });
+                }}
+              />
             </div>
             <span>迎新</span>
           </div>
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="学习" onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/study/ques"}});
-                }} />
+                navigate('/knowledge_base_sorts', { state: { api: "/study/ques" } });
+              }} />
             </div>
             <span>学习</span>
           </div>
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="生活" onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/life/ques"}});
-                }} />
+                navigate('/knowledge_base_sorts', { state: { api: "/life/ques" } });
+              }} />
             </div>
             <span>生活</span>
           </div>
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="行政" onClick={() => {
-                  navigate('/knowledge_base_sorts',{state:{api:"/admin/ques"}});
-                }} />
+                navigate('/knowledge_base_sorts', { state: { api: "/admin/ques" } });
+              }} />
             </div>
             <span>行政</span>
           </div>
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="网址号码" onClick={() => {
-                  navigate('/knowledge_base_sorts');
-                }} />
+                navigate('/knowledge_base_sorts');
+              }} />
             </div>
             <span>网址号码</span>
           </div>
@@ -225,10 +225,6 @@ function Content(props) {
           </div>
         </div>
         <div className={mod.hr}></div>
-        <div className={mod.hot_icon_wrapper}>
-          <img src="" alt="" />
-          <span>热门问题</span>
-        </div>
       </div>
       <ContentAnsItems content={props.content} handleToContent={props.handleToContent} />
     </Fragment>
@@ -239,35 +235,41 @@ function ContentAnsItems(props) {
   const navigate = useNavigate();
   return (
     <ul className={mod.hot_ques_wrapper}>
+      <li className={mod.hot_icon_wrapper}>
+        <img src="" alt="" />
+        <span>热门问题</span>
+      </li>
       {props.content.map((item, index) => {
         return (
-          <li
-            key={index}
-            onClick={() => {
-              props.handleToContent(item);
-              navigate('/knowledge_base_content')
-            }}>
-            <div className={mod.hot_ques_top_info_wrapper}>
-              <img src={profileImg} alt="profile_photo" />
-              <span> {item.username}</span>
-            </div>
-            <div className={mod.hot_ques_text_wrapper}>
-              <span className={mod.hot_ques_text_header}>{item.que}</span>
-              <div className={mod.hot_ques_text_content_wrapper}>
-                <span className={mod.hot_ques_text_content}>
-                  <ContentAnsText content={item.questionid} />
-                </span>
+          <Fragment>
+            <li
+              key={index}
+              onClick={() => {
+                props.handleToContent(item);
+                navigate('/knowledge_base_content')
+              }}>
+              <div className={mod.hot_ques_top_info_wrapper}>
+                <img src={profileImg} alt="profile_photo" />
+                <span> {item.username}</span>
               </div>
-            </div>
-            <div className={mod.hot_ques_bottom_info_wrapper}></div>
-          </li>
+              <div className={mod.hot_ques_text_wrapper}>
+                <span className={mod.hot_ques_text_header}>{item.que}</span>
+                <div className={mod.hot_ques_text_content_wrapper}>
+                  <span className={mod.hot_ques_text_content}>
+                    <ContentAnsText content={item.questionid} />
+                  </span>
+                </div>
+              </div>
+              <div className={mod.hot_ques_bottom_info_wrapper}></div>
+            </li>
+          </Fragment>
         )
       })}
-      <li className={mod.hot_ques_bottom_blank}>
+      <div className={mod.hot_ques_bottom_blank}>
         <span>
           暂无更多
         </span>
-      </li>
+      </div>
     </ul>
   )
 }

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import mod from './index.module.scss'
 import { useLocation } from "react-router-dom";
+import { List } from "react-virtualized";
+import axios from "axios";
 
 export default function Home() {
   const navigate = useNavigate();

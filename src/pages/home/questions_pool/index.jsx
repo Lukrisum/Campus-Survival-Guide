@@ -1,5 +1,5 @@
 import mod from './index.module.scss';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useRef, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import Spinner from '../../../components/spinner';
 import Shady from '../../../components/shady';
@@ -9,6 +9,7 @@ import axios from 'axios';
 import FabMine from '../../../components/floating_action_button';
 import { connect } from 'react-redux';
 import { actions } from '../../../redux'
+
 //temp plan
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
@@ -153,6 +154,41 @@ function Loading() {
 
 function Content(props) {
   const nevigate = useNavigate();
+  const list = props.content;
+  const renderItem = ({ index }) => {
+    return (
+      <li
+        key={index}
+        onClick={() => {
+          props.handleToCommentArea(list[index]);
+          nevigate('/comment_area');
+        }}
+        id={list[index].questionid}
+      >
+        <div
+          className={mod.profile_img_wrapper}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}>
+          <AccountCircleIcon style={{ width: '100%', height: '100%' }} />
+        </div>
+        <div
+          className={mod.username_wrapper}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}>
+          <span className={mod.span_0}>{list[index].username}</span>
+          <span className={mod.span_1}>最先提问</span>
+          <span className={mod.span_2}>三天前</span>
+        </div>
+        <div className={mod.text_wrapper}>
+          <TextBox text={list[index].que} type={false} />
+        </div>
+        <DataBar data={list[index]} handlePushAns={props.handlePushAns} ansnum={props.ansnum} />
+      </li>
+    )
+  }
+
   return (
     <div className={mod.list_wrapper}>
       <FabMine onclick={props.handlePushQues} />
@@ -267,3 +303,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(Questions_pool);
+

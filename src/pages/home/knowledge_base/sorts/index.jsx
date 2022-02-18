@@ -199,11 +199,11 @@ function ContentAnsItems(props) {
           </li>
         )
       })}
-      <li className={mod.hot_ques_bottom_blank}>
+      <div className={mod.hot_ques_bottom_blank}>
         <span>
           暂无更多
         </span>
-      </li>
+      </div>
     </ul>
   )
 }

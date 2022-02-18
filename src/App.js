@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Content from "./pages/home/knowledge_base/content";
 import Sorts from "./pages/home/knowledge_base/sorts";
+import App_0 from "./pages/home/test";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/comment_area' element={<Comment_area />}></Route>
           <Route path='/knowledge_base_content' element={<Content/>}></Route>
           <Route path='/knowledge_base_sorts' element={<Sorts/>}></Route>
+          <Route path="/test" element={<App_0/>}></Route>
         </Routes>
       </div>
     </Provider>
