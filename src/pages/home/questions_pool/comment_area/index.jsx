@@ -6,16 +6,17 @@ import KeyboardInput from "../../../../components/keyboard_input";
 import Shady from "../../../../components/shady";
 import TextBox from "../../../../components/text_box";
 import { connect } from "react-redux";
+import { useLocation } from 'react-router'
 //
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 const Comment_area = (props) => {
-
+  const location = useLocation();
   const [popup, setPopup] = useState(false);
-  const [msg, setMsg] = useState(props);
-
+  const [msg, setMsg] = useState(location.state.props);
+  const [ansnum, setAnsnum] = useState(null);
   //回答
   const handleSubmit = (ans) => {
     axios({
@@ -32,22 +33,22 @@ const Comment_area = (props) => {
     }).then((res) => {
       alert('提交成功(待审核...)');
       setPopup(false);
+      handleGetAnsnum(msg.questionid);
     }).catch((error) => {
       console.log(error);
     })
   }
 
-  const handleLike = (questionid) => {
+  //当前回答人数
+  const handleGetAnsnum = (questionid) => {
     axios({
       method: 'post',
-      url: 'http://120.77.8.223:88/aplike',
+      url: 'http://120.77.8.223:88/apans',
       data: {
         questionid,
       }
-    }).then((res) => {
-      alert(res.data.msg);
-    }).catch((error) => {
-      console.log(error)
+    }).then(({ data }) => {
+      setAnsnum(data.msg.length);
     })
   }
 
@@ -61,8 +62,7 @@ const Comment_area = (props) => {
         <Content
           handlegetMsg={setMsg}
           handleSetPop={setPopup}
-          handleAddLike={handleLike}
-          answerItems={props}
+          ansnumMsg={ansnum}
         />
       </div>
       <div className={mod.hr}></div>
@@ -70,7 +70,7 @@ const Comment_area = (props) => {
         <span className={mod.section_header}>相关回答</span>
       </div>
       <div className={mod.comments_wrapper}>
-        <Comments answerItemText={props} />
+        <Comments />
       </div>
 
       {
@@ -93,61 +93,114 @@ const Comment_area = (props) => {
 }
 
 function Content(props) {
-  const item = props.answerItems;
+  const location = useLocation()
+  const item = location.state.props;
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(item.great);
+  const [ansnum, setAnsnum] = useState(item.ansnum);
 
-  // ...  change this block to that based on network request
-  const [storeItems, setstoreItems] = useState({});
-  const enterFlag = item.que || item.que === '';
-  const reflash_flag = localStorage.getItem('que_item');
+  //回答人数 动态变化
+  useEffect(() => {
+    setAnsnum(props.ansnumMsg);
+  }, [props.ansnumMsg])
 
   useEffect(() => {
-    if (reflash_flag && !enterFlag) {
-      setstoreItems(JSON.parse(localStorage.getItem('que_item')));
-    }
-    else if (enterFlag) {
-      localStorage.setItem('que_item', JSON.stringify(item));
-      setstoreItems(JSON.parse(localStorage.getItem('que_item')));
-    }
-  }, []);
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aplikeoff',
+      data: {
+        questionid: item.questionid,
+        userid: 12306
+      }
+    }).then(res => {
+      if (res.data.msg === "取消点赞成功") {
+        setIsLiked(true)
+        axios({
+          method: 'post',
+          url: 'http://120.77.8.223:88/aplike',
+          data: {
+            questionid: item.questionid,
+            userid: 12306
+          }
+        })
+      }
+    })
+  }, [])
 
-  useEffect(() => {
-    localStorage.setItem('que_item', JSON.stringify(storeItems));
-  }, [storeItems])
+  //点赞
+  const handleLike = (questionid, userid) => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aplike',
+      data: {
+        questionid,
+        userid,
+      }
+    }).then((res) => {
+      if (res.data.msg === "点赞成功") {
+        setIsLiked(true);
+        setLikes(item.great + 1);
+      }
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  //取消点赞
+  const handleCancleLike = (questionid, userid) => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aplikeoff',
+      data: {
+        questionid,
+        userid,
+      }
+    }).then((res) => {
+      if (res.data.msg === "取消点赞成功") {
+        setIsLiked(false);
+        setLikes(likes - 1);
+      }
+    }).catch(error => {
+      console.log(error);
+    })
+  }
 
   return (
     <Fragment>
       <ul className={mod.content_text_wrapper}>
-        <li id={enterFlag ? item.questionid : storeItems.questionid}>
+        <li id={item.questionid}>
           <div className={mod.profile_img_wrapper}>
             <AccountCircleIcon style={{ width: '100%', height: '100%' }} />
           </div>
           <div className={mod.username_wrapper}>
-            <span className={mod.span_0}>{enterFlag ? item.username : storeItems.username}</span>
+            <span className={mod.span_0}>{item.username}</span>
             <span className={mod.span_1}>最先提问</span>
             <span className={mod.span_2}>三天前</span>
           </div>
           <div className={mod.text_wrapper}>
-            <TextBox text={enterFlag ? item.que : storeItems.que} type={true} />
+            <TextBox text={item.que} type={true} />
           </div>
           <div className={mod.bottom_data_wrapper}>
-            <span className={mod.bottom_data_wrapper_ansnum}>已有{storeItems.ansnum}人回答</span>
+            <span className={mod.bottom_data_wrapper_ansnum}>已有{ansnum || item.ansnum}人回答</span>
             <div className={mod.bottom_data_wrapper_great_wrapper}>
               <div>
-                <ArrowDropUpIcon />
+                <ArrowDropUpIcon style={
+                  isLiked
+                    ? { backgroundColor: 'red' }
+                    : {}
+                } />
                 <span onClick={() => {
-                  props.handleAddLike(enterFlag ? item.questionid : storeItems.questionid);
-                  setstoreItems({
-                    ...storeItems,
-                    great: storeItems.great + 1
-                  });
-                }} >同问{storeItems.great}</span>
+                  isLiked
+                    ? handleCancleLike(item.questionid, 12306)
+                    : handleLike(item.questionid, 12306)
+                }} >同问{likes}</span>
               </div>
               <div className={mod.bottom_data_wrapper_great_wrapper_blank}></div>
               <div>
                 <TextsmsIcon />
                 <span
                   onClick={() => {
-                    props.handlegetMsg(enterFlag ? item : storeItems);
+                    props.handlegetMsg(item);
                     props.handleSetPop(true);
                   }}>回答</span>
               </div>
@@ -159,8 +212,9 @@ function Content(props) {
   )
 }
 
-function Comments(props) {
-  const item = props.answerItemText;
+function Comments() {
+  const location = useLocation()
+  const item = location.state.props;
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const enterFlag = item.que || item.que === '';

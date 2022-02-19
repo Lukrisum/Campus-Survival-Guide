@@ -15,7 +15,7 @@ import profileImg from '../../../assets/images/ncuhome.jpg'
 function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
-  
+
   useEffect(() => {
     axios.get('http://120.77.8.223:88/hot')
       .then(({ data }) => {
@@ -241,28 +241,27 @@ function ContentAnsItems(props) {
       </li>
       {props.content.map((item, index) => {
         return (
-          <Fragment>
-            <li
-              key={index}
-              onClick={() => {
-                props.handleToContent(item);
-                navigate('/knowledge_base_content')
-              }}>
-              <div className={mod.hot_ques_top_info_wrapper}>
-                <img src={profileImg} alt="profile_photo" />
-                <span> {item.username}</span>
+          <li
+            key={index}
+            onClick={() => {
+              props.handleToContent(item);
+              navigate('/knowledge_base_content')
+            }}
+          >
+            <div className={mod.hot_ques_top_info_wrapper}>
+              <img src={profileImg} alt="profile_photo" />
+              <span> {item.username}</span>
+            </div>
+            <div className={mod.hot_ques_text_wrapper}>
+              <span className={mod.hot_ques_text_header}>{item.que}</span>
+              <div className={mod.hot_ques_text_content_wrapper}>
+                <span className={mod.hot_ques_text_content}>
+                  <ContentAnsText content={item.questionid} />
+                </span>
               </div>
-              <div className={mod.hot_ques_text_wrapper}>
-                <span className={mod.hot_ques_text_header}>{item.que}</span>
-                <div className={mod.hot_ques_text_content_wrapper}>
-                  <span className={mod.hot_ques_text_content}>
-                    <ContentAnsText content={item.questionid} />
-                  </span>
-                </div>
-              </div>
-              <div className={mod.hot_ques_bottom_info_wrapper}></div>
-            </li>
-          </Fragment>
+            </div>
+            <div className={mod.hot_ques_bottom_info_wrapper}></div>
+          </li>
         )
       })}
       <div className={mod.hot_ques_bottom_blank}>

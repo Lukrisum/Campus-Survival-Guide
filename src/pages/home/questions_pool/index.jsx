@@ -1,5 +1,5 @@
 import mod from './index.module.scss';
-import { useState, useRef, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import Spinner from '../../../components/spinner';
 import Shady from '../../../components/shady';
@@ -12,7 +12,6 @@ import { actions } from '../../../redux'
 
 //temp plan
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
@@ -23,6 +22,7 @@ function Questions_pool(props) {
   const [questionid, setQuestionid] = useState();
   const [pushFlag, setPushFlag] = useState(false);
   const [ansnum, setAnsnum] = useState(null);
+  const [item, setItem] = useState({})
 
   //get what`s hot
   useEffect(() => {
@@ -126,6 +126,8 @@ function Questions_pool(props) {
           :
           <Content
             content={items}
+            handleItem={setItem}
+            item={item}
             handleToCommentArea={props.sendAction}
             handlePushAns={(msg) => {
               setQuestionid(msg);
@@ -155,8 +157,6 @@ function Loading() {
 
 function Content(props) {
   const nevigate = useNavigate();
-  const list = props.content;
-
   return (
     <div className={mod.list_wrapper}>
       <FabMine onclick={props.handlePushQues} />
@@ -168,7 +168,7 @@ function Content(props) {
                 key={index}
                 onClick={() => {
                   props.handleToCommentArea(item);
-                  nevigate('/comment_area');
+                  nevigate('/comment_area', { state: { props: item } });
                 }}
                 id={item.questionid}
               >
@@ -191,7 +191,7 @@ function Content(props) {
                 <div className={mod.text_wrapper}>
                   <TextBox text={item.que} type={false} />
                 </div>
-                <DataBar data={item} handlePushAns={props.handlePushAns} ansnum={props.ansnum} />
+                <DataBar data={item} handleItem={props.handleItem} handlePushAns={props.handlePushAns} ansnum={props.ansnum} />
               </li>
             )
           })
@@ -209,12 +209,36 @@ function DataBar(props) {
   const ansnumMsg = props.ansnum;
   const [isLiked, setIsLiked] = useState(false);
 
-  //检查是否为被回答的问题
+  //检查是否为目标问题
   useEffect(() => {
     if (ansnumMsg?.questionid == item.questionid && ansnumMsg.ansnum != null) {
       setAnsnum(ansnumMsg.ansnum);
     }
   }, [props.ansnum])
+
+  //获取点赞状态
+  useEffect(() => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aplikeoff',
+      data: {
+        questionid: item.questionid,
+        userid: 12306
+      }
+    }).then(res => {
+      if (res.data.msg === "取消点赞成功") {
+        setIsLiked(true)
+        axios({
+          method: 'post',
+          url: 'http://120.77.8.223:88/aplike',
+          data: {
+            questionid: item.questionid,
+            userid: 12306
+          }
+        })
+      }
+    })
+  }, [])
 
   //点赞
   const handleLike = (questionid, userid) => {
@@ -226,10 +250,8 @@ function DataBar(props) {
         userid,
       }
     }).then((res) => {
-      if (res.data.msg === "不能重复点赞") {
-        handleCancleLike(questionid, userid);
-      }
       if (res.data.msg === "点赞成功") {
+        setIsLiked(true);
         setLikes(item.great + 1);
       }
     }).catch((error) => {
@@ -248,16 +270,13 @@ function DataBar(props) {
       }
     }).then((res) => {
       if (res.data.msg === "取消点赞成功") {
+        setIsLiked(false);
         setLikes(likes - 1);
       }
     }).catch(error => {
       console.log(error);
     })
   }
-
-  //获取点赞状态
-  useEffect(() => {
-  }, [])
 
   return (
     <div
@@ -268,10 +287,16 @@ function DataBar(props) {
       <span className={mod.bottom_data_wrapper_ansnum}>已有{ansnum}人回答</span>
       <div className={mod.bottom_data_wrapper_great_wrapper}>
         <div>
-          <ArrowDropUpIcon />
+          <ArrowDropUpIcon style={
+            isLiked
+              ? { backgroundColor: 'red' }
+              : {}
+          } />
           <span
             onClick={() => {
-              handleLike(item.questionid, 10086);
+              isLiked
+                ? handleCancleLike(item.questionid, 12306)
+                : handleLike(item.questionid, 12306);
             }}
           >同问{likes}
           </span>
