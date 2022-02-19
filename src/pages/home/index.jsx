@@ -43,6 +43,7 @@ export default function Home() {
             ><span>百事通</span>
             </li>
           </ul>
+          <div onClick={()=>{navigate('/test')}}>跳转</div>
         </div>
       </div>
       <div className={hr ? mod.hr : mod.hr_hidden}></div>

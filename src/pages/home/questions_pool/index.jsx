@@ -12,6 +12,7 @@ import { actions } from '../../../redux'
 
 //temp plan
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
@@ -155,39 +156,6 @@ function Loading() {
 function Content(props) {
   const nevigate = useNavigate();
   const list = props.content;
-  const renderItem = ({ index }) => {
-    return (
-      <li
-        key={index}
-        onClick={() => {
-          props.handleToCommentArea(list[index]);
-          nevigate('/comment_area');
-        }}
-        id={list[index].questionid}
-      >
-        <div
-          className={mod.profile_img_wrapper}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}>
-          <AccountCircleIcon style={{ width: '100%', height: '100%' }} />
-        </div>
-        <div
-          className={mod.username_wrapper}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}>
-          <span className={mod.span_0}>{list[index].username}</span>
-          <span className={mod.span_1}>最先提问</span>
-          <span className={mod.span_2}>三天前</span>
-        </div>
-        <div className={mod.text_wrapper}>
-          <TextBox text={list[index].que} type={false} />
-        </div>
-        <DataBar data={list[index]} handlePushAns={props.handlePushAns} ansnum={props.ansnum} />
-      </li>
-    )
-  }
 
   return (
     <div className={mod.list_wrapper}>
@@ -239,8 +207,9 @@ function DataBar(props) {
   const [ansnum, setAnsnum] = useState(item.ansnum);
   const [likes, setLikes] = useState(item.great);
   const ansnumMsg = props.ansnum;
+  const [isLiked, setIsLiked] = useState(false);
 
-  //检查问题是否被回答
+  //检查是否为被回答的问题
   useEffect(() => {
     if (ansnumMsg?.questionid == item.questionid && ansnumMsg.ansnum != null) {
       setAnsnum(ansnumMsg.ansnum);
@@ -248,19 +217,47 @@ function DataBar(props) {
   }, [props.ansnum])
 
   //点赞
-  const handleLike = (questionid) => {
+  const handleLike = (questionid, userid) => {
     axios({
       method: 'post',
       url: 'http://120.77.8.223:88/aplike',
       data: {
         questionid,
+        userid,
       }
     }).then((res) => {
-      alert(res.data.msg);
+      if (res.data.msg === "不能重复点赞") {
+        handleCancleLike(questionid, userid);
+      }
+      if (res.data.msg === "点赞成功") {
+        setLikes(item.great + 1);
+      }
     }).catch((error) => {
       console.log(error)
     })
   }
+
+  //取消点赞
+  const handleCancleLike = (questionid, userid) => {
+    axios({
+      method: 'post',
+      url: 'http://120.77.8.223:88/aplikeoff',
+      data: {
+        questionid,
+        userid,
+      }
+    }).then((res) => {
+      if (res.data.msg === "取消点赞成功") {
+        setLikes(likes - 1);
+      }
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  //获取点赞状态
+  useEffect(() => {
+  }, [])
 
   return (
     <div
@@ -274,8 +271,7 @@ function DataBar(props) {
           <ArrowDropUpIcon />
           <span
             onClick={() => {
-              handleLike(item.questionid);
-              setLikes(likes + 1);
+              handleLike(item.questionid, 10086);
             }}
           >同问{likes}
           </span>

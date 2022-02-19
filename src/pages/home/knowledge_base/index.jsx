@@ -15,7 +15,7 @@ import profileImg from '../../../assets/images/ncuhome.jpg'
 function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
-
+  
   useEffect(() => {
     axios.get('http://120.77.8.223:88/hot')
       .then(({ data }) => {
