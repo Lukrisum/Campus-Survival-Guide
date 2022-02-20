@@ -9,6 +9,12 @@ import Content from "./pages/home/knowledge_base/content";
 import Sorts from "./pages/home/knowledge_base/sorts";
 import App_0 from "./pages/home/test";
 
+if (process.env.NODE_ENV === 'development') {
+  import('mincu-debug').then(({ default: debugModule }) => {
+    debugModule.applyConsole()
+  })
+}
+
 function App() {
   return (
     <Provider store={store}>
@@ -19,9 +25,9 @@ function App() {
             <Route path='/knowledge_base/' element={<Knowledge_base />}></Route>
           </Route>
           <Route path='/comment_area' element={<Comment_area />}></Route>
-          <Route path='/knowledge_base_content' element={<Content/>}></Route>
-          <Route path='/knowledge_base_sorts' element={<Sorts/>}></Route>
-          <Route path="/test" element={<App_0/>}></Route>
+          <Route path='/knowledge_base_content' element={<Content />}></Route>
+          <Route path='/knowledge_base_sorts' element={<Sorts />}></Route>
+          <Route path="/test" element={<App_0 />}></Route>
         </Routes>
       </div>
     </Provider>
