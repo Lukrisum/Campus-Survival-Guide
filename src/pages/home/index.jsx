@@ -41,7 +41,6 @@ export default function Home() {
             ><span>百事通</span>
             </li>
           </ul>
-          <button onClick={()=>{navigate('/test')}} style={{position:"fixed",zIndex:'1000'}} >跳转</button>
         </div>
       </div>
       <div className={hr ? mod.hr : mod.hr_hidden}></div>

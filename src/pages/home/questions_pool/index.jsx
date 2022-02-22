@@ -9,11 +9,12 @@ import axios from 'axios';
 import FabMine from '../../../components/floating_action_button';
 import { connect } from 'react-redux';
 import { actions } from '../../../redux'
-
+import { moreData } from '../../../utils/infiniteScroll_data';
 //temp plan
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import { InfiniteScroll } from 'antd-mobile'
 
 function Questions_pool(props) {
   const [isloading, setIsloading] = useState(true);      //whether is loaded or not
@@ -157,12 +158,22 @@ function Loading() {
 
 function Content(props) {
   const nevigate = useNavigate();
+
+  const [data, setData] = useState([]);
+  const [hasMore, setHasMore] = useState(true)
+
+  async function loadMore() {
+    const append = await moreData(props.content);
+    setData(val => [...val, ...append]);
+    setHasMore(append.length > 0);
+  }
+
   return (
     <div className={mod.list_wrapper}>
       <FabMine onclick={props.handlePushQues} />
       <ul>
         {
-          props.content.map((item, index) => {
+          data.map((item, index) => {
             return (
               <li
                 key={index}
@@ -192,10 +203,10 @@ function Content(props) {
                   <TextBox text={item.que} type={false} />
                 </div>
                 <DataBar data={item} handleItem={props.handleItem} handlePushAns={props.handlePushAns} ansnum={props.ansnum} />
-              </li>
-            )
+              </li>)
           })
         }
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore}/>
       </ul>
     </div>
   )
@@ -324,4 +335,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(Questions_pool);
-
