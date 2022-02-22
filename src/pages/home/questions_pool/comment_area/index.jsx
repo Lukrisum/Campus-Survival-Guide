@@ -11,6 +11,8 @@ import { useLocation } from 'react-router'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import { InfiniteScroll } from 'antd-mobile'
+import { moreData } from '../../../../utils/infiniteScroll_data';
 
 const Comment_area = (props) => {
   const location = useLocation();
@@ -30,7 +32,7 @@ const Comment_area = (props) => {
         'username': '???',
         'questionid': msg.questionid
       }
-    }).then((res) => {
+    }).then(() => {
       alert('提交成功(待审核...)');
       setPopup(false);
       handleGetAnsnum(msg.questionid);
@@ -239,6 +241,15 @@ function Comments() {
     })
   }, [])
 
+  const [data, setData] = useState([]);
+  const [hasMore, setHasMore] = useState(true)
+
+  async function loadMore() {
+    const append = await moreData(items);
+    setData(val => [...val, ...append]);
+    setHasMore(append.length > 0);
+  }
+
   return (
     <ul>
       {
@@ -246,7 +257,7 @@ function Comments() {
           ? <Loading />
           : <Fragment>
             {
-              items.map((item, index) => {
+              data.map((item, index) => {
                 return (
                   <li className={mod.comments_content_wrapper} key={index}>
                     <div className={mod.profile_info_wrapper}>
@@ -263,9 +274,10 @@ function Comments() {
                 )
               })
             }
-            <li className={mod.comments_end_wrapper}>
+            <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+            {/* <li className={mod.comments_end_wrapper}>
               暂无更多
-            </li>
+            </li> */}
           </Fragment>
       }
     </ul>

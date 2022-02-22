@@ -206,7 +206,7 @@ function Content(props) {
               </li>)
           })
         }
-        <InfiniteScroll loadMore={loadMore} hasMore={hasMore}/>
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
       </ul>
     </div>
   )

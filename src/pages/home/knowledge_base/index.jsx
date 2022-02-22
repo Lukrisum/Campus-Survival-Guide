@@ -1,7 +1,7 @@
 import React from 'react';
 import mod from './index.module.scss';
 import Spinner from '../../../components/spinner';
-import { useState, useEffect, Fragment, useRef, useMemo } from 'react';
+import { useState, useEffect, Fragment, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
@@ -11,13 +11,15 @@ import { useDebounce } from '../../../utils/debounce';
 import { connect } from 'react-redux';
 import { actions } from '../../../redux'
 import profileImg from '../../../assets/images/ncuhome.jpg'
+import { InfiniteScroll } from 'antd-mobile'
+import { moreData } from '../../../utils/infiniteScroll_data';
 
 function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    axios.get('http://120.77.8.223:88/hot')
+    axios.get('http://120.77.8.223:88/ques')
       .then(({ data }) => {
         const addList = (preList) => {
           const newList = preList.concat(data.msg);
@@ -233,13 +235,23 @@ function Content(props) {
 
 function ContentAnsItems(props) {
   const navigate = useNavigate();
+
+  const [data, setData] = useState([]);
+  const [hasMore, setHasMore] = useState(true)
+
+  async function loadMore() {
+    const append = await moreData(props.content);
+    setData(val => [...val, ...append]);
+    setHasMore(append.length > 0);
+  }
+
   return (
     <ul className={mod.hot_ques_wrapper}>
       <li className={mod.hot_icon_wrapper}>
         <img src="" alt="" />
         <span>热门问题</span>
       </li>
-      {props.content.map((item, index) => {
+      {data.map((item, index) => {
         return (
           <li
             key={index}
@@ -264,11 +276,8 @@ function ContentAnsItems(props) {
           </li>
         )
       })}
-      <div className={mod.hot_ques_bottom_blank}>
-        <span>
-          暂无更多
-        </span>
-      </div>
+      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      <div className={mod.hot_ques_bottom_blank}></div>
     </ul>
   )
 }

@@ -9,10 +9,12 @@ export async function moreData(Data) {
   }
 
   const moreData = Data.slice(flag, flag + 5);
-  
-  await sleep(2000);
+
+  if (flag > 0) {
+    await sleep(2000);
+  }
   flag += 5;
-  
+
   return moreData;
 
 }
