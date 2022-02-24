@@ -178,8 +178,11 @@
         align-items: center;
         padding:.5rem 0 .3rem 0;
         img{
-          width: 2em;
-          height: 2rem;
+          display: inline-block;
+          min-width: 2rem;
+          min-height: 2rem;
+          max-width: 2rem;
+          max-width: 2rem;
         }
         span{
           padding-left: .5rem;
@@ -200,9 +203,16 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
             overflow: hidden;
+            color: rgb(84, 95, 84);
             background-color: #ffffff;
             text-overflow: ellipsis;
             max-height: 39rem;
+            .hot_ques_text_content_loading{
+              font-size: 1.6rem;
+              font-style:italic;
+              font-weight: bolder;
+              color: #7e76765d;
+            }
           }
         }
       }

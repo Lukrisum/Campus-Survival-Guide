@@ -1,5 +1,5 @@
 import mod from './index.module.scss';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect,Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import Spinner from '../../../components/spinner';
 import Shady from '../../../components/shady';
@@ -156,14 +156,17 @@ function Loading() {
   )
 }
 
+
 function Content(props) {
   const nevigate = useNavigate();
 
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true)
+  const [flag,setFlag] = useState(0)
 
   async function loadMore() {
-    const append = await moreData(props.content);
+    const append = await moreData(props.content,flag);
+    setFlag(flag+5);
     setData(val => [...val, ...append]);
     setHasMore(append.length > 0);
   }

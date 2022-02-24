@@ -11,6 +11,8 @@ import { useDebounce } from '../../../../utils/debounce';
 import { connect } from 'react-redux';
 import { actions } from '../../../../redux'
 import profileImg from '../../../../assets/images/ncuhome.jpg'
+import {moreData} from '../../../../utils/infiniteScroll_data'
+import { InfiniteScroll } from 'antd-mobile'
 
 axios.defaults.baseURL = "http://120.77.8.223:88";
 
@@ -173,6 +175,17 @@ function Content(props) {
 
 function ContentAnsItems(props) {
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [flag, setFlag] = useState(0)
+
+  async function loadMore() {
+    const append = await moreData(props.content, flag);
+    setFlag(flag + 5);
+    setData(val => [...val, ...append]);
+    setHasMore(append.length > 0);
+  }
+
   return (
     <ul className={mod.hot_ques_wrapper}>
       {props.content.map((item, index) => {
@@ -199,17 +212,15 @@ function ContentAnsItems(props) {
           </li>
         )
       })}
-      <div className={mod.hot_ques_bottom_blank}>
-        <span>
-          暂无更多
-        </span>
-      </div>
+      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
     </ul>
   )
 }
 
 function ContentAnsText(props) {
   const [answer, setAnswer] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     axios({
       method: 'post',
@@ -219,12 +230,17 @@ function ContentAnsText(props) {
       }
     }).then(({ data }) => {
       setAnswer(data.msg[0].ans);
+      setIsLoading(true);
     })
   }, [])
 
   return (
     <Fragment>
-      <span dangerouslySetInnerHTML={{ __html: answer }} ></span>
+      {
+        isLoading
+          ? <span dangerouslySetInnerHTML={{ __html: answer }} ></span>
+          : <span className={mod.hot_ques_text_content_loading}>加载中...</span>
+      }
     </Fragment>
   )
 }

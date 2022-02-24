@@ -13,6 +13,8 @@ import { actions } from '../../../redux'
 import profileImg from '../../../assets/images/ncuhome.jpg'
 import { InfiniteScroll } from 'antd-mobile'
 import { moreData } from '../../../utils/infiniteScroll_data';
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress'
 
 function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);
@@ -235,14 +237,25 @@ function Content(props) {
 
 function ContentAnsItems(props) {
   const navigate = useNavigate();
-
   const [data, setData] = useState([]);
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(true);
+  const [flag, setFlag] = useState(0)
 
   async function loadMore() {
-    const append = await moreData(props.content);
+    const append = await moreData(props.content, flag);
+    setFlag(flag + 5);
     setData(val => [...val, ...append]);
     setHasMore(append.length > 0);
+  }
+
+  const InfiniteScrollContent = () => {
+    return (
+      <>
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress style={{ backgroundColor: "rgb(101,189,252)" }} />
+        </Box>
+      </>
+    )
   }
 
   return (
@@ -276,7 +289,9 @@ function ContentAnsItems(props) {
           </li>
         )
       })}
-      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} >
+        <InfiniteScrollContent hasMore={hasMore} />
+      </InfiniteScroll>
       <div className={mod.hot_ques_bottom_blank}></div>
     </ul>
   )
@@ -284,6 +299,8 @@ function ContentAnsItems(props) {
 
 function ContentAnsText(props) {
   const [answer, setAnswer] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     axios({
       method: 'post',
@@ -293,12 +310,17 @@ function ContentAnsText(props) {
       }
     }).then(({ data }) => {
       setAnswer(data.msg[0].ans);
+      setIsLoading(true);
     })
   }, [])
 
   return (
     <Fragment>
-      <span dangerouslySetInnerHTML={{ __html: answer }} ></span>
+      {
+        isLoading
+          ? <span dangerouslySetInnerHTML={{ __html: answer }} ></span>
+          : <span className={mod.hot_ques_text_content_loading}>加载中...</span>
+      }
     </Fragment>
   )
 }

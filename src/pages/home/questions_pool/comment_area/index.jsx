@@ -243,9 +243,11 @@ function Comments() {
 
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true)
+  const [flag,setFlag] = useState(0);
 
   async function loadMore() {
-    const append = await moreData(items);
+    const append = await moreData(items,flag);
+    setFlag(flag+5);
     setData(val => [...val, ...append]);
     setHasMore(append.length > 0);
   }

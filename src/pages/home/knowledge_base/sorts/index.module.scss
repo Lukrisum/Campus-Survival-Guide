@@ -166,26 +166,17 @@
             text-overflow: ellipsis;
             max-height: 39rem;
           }
+          .hot_ques_text_content_loading{
+            font-size: 1.6rem;
+            font-style:italic;
+            font-weight: bolder;
+            color: #7e76765d;
+          }
         }
       }
       .hot_ques_bottom_info_wrapper {
         display: flex;
         justify-content: flex-end;
-      }
-    }
-    .hot_ques_bottom_blank{
-      padding-top: 1.3rem;
-      background-color: rgba(0,0,0,0);
-      text-align: center;
-      height: 6.7rem;
-      span{
-          text-align: center;
-          font-family: Poppins;
-          font-style: normal;
-          font-weight: bold;
-          font-size: 1.2rem;
-          line-height: 140%;
-          color: #646c703f;  
       }
     }
   }

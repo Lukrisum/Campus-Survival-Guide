@@ -23,8 +23,11 @@
   .profile_wrapper {
     display: flex;
     img {
-      width: 2rem;
-      height: 2rem;
+      display: inline-block;
+      min-width: 2rem;
+      min-height: 2rem;
+      max-width: 2rem;
+      max-width: 2rem;
     }
     span {
       display: inline-block;

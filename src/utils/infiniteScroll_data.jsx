@@ -1,9 +1,6 @@
 import { sleep } from 'antd-mobile/es/utils/sleep';
 
-let flag = 0;
-
-export async function moreData(Data) {
-
+export async function moreData(Data,flag) {
   if (Data.length <= flag + 1) {
     return [];
   }
@@ -11,10 +8,9 @@ export async function moreData(Data) {
   const moreData = Data.slice(flag, flag + 5);
 
   if (flag > 0) {
-    await sleep(2000);
+    await sleep(1000);
   }
+
   flag += 5;
-
   return moreData;
-
 }
