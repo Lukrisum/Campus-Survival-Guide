@@ -58,13 +58,15 @@
           line-height: 0rem;
         }
       }
-      ul {
+      .search_result_wrapper {
         list-style: none;
         padding: 0rem;
         margin: 0;
         position: fixed;
         width: 28rem;
         box-sizing: border-box;
+        height: 12.5rem;
+        overflow: scroll;
         li {
           padding-left: 2rem;
           background-color: #ffffff;
