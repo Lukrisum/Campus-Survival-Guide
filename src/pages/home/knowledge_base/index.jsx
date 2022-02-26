@@ -243,7 +243,7 @@ function ContentAnsItems(props) {
 
   async function loadMore() {
     const append = await moreData(props.content, flag);
-    setFlag(flag + 5);
+    setFlag(flag + 6);
     setData(val => [...val, ...append]);
     setHasMore(append.length > 0);
   }

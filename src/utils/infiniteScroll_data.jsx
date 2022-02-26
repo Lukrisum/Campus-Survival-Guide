@@ -5,12 +5,12 @@ export async function moreData(Data,flag) {
     return [];
   }
 
-  const moreData = Data.slice(flag, flag + 7);
+  const moreData = Data.slice(flag, flag + 6);
 
   if (flag > 0) {
     await sleep(1000);
   }
 
-  flag += 7;
+  flag += 6;
   return moreData;
 }
