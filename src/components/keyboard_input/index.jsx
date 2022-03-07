@@ -46,7 +46,7 @@ export default function KeyboardInput(props) {
       <span>{props.header}</span>
       <hr />
       <textarea
-        placeholder='请输入你的具体回答...'
+        placeholder={`请输入你的具体${props.header === '提交问题' ? '问题' : '回答'}...`}
         cols="20" rows="4"
         onChange={(e) => {
           handleInput(e);

@@ -13,44 +13,32 @@ import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { InfiniteScroll } from 'antd-mobile'
 import { moreData } from '../../../../utils/infiniteScroll_data';
+import CommentApi from "../../../../api/question_pool/comment_list";
+import QuestionPoolApi from "../../../../api/question_pool/question_pool";
 
 const Comment_area = (props) => {
   const location = useLocation();
   const [popup, setPopup] = useState(false);
   const [msg, setMsg] = useState(location.state.props);
   const [ansnum, setAnsnum] = useState(null);
-  //回答
-  const handleSubmit = (ans) => {
-    axios({
-      url: 'http://120.77.8.223:88/aphand_ans',
-      method: 'post',
-      headers: {
-        'code': 'iknow',
-      },
-      data: {
-        ans,
-        'username': '???',
-        'questionid': msg.questionid
-      }
-    }).then(() => {
-      alert('提交成功(待审核...)');
-      setPopup(false);
-      handleGetAnsnum(msg.questionid);
-    }).catch((error) => {
-      console.log(error);
-    })
+
+  /* 回答 */
+  const handleSubmit = (answer) => {
+    try {
+      QuestionPoolApi.pushAnswer(answer, "wtf", msg.questionid).then(() => {
+        alert("提交成功(待审核...)")
+        setPopup(false)
+        handleGetAnsnum(msg.questionid)
+      })
+    } catch (error) {
+      alert(error)
+    }
   }
 
-  //当前回答人数
+  /* 当前问题回答人数 */
   const handleGetAnsnum = (questionid) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/apans',
-      data: {
-        questionid,
-      }
-    }).then(({ data }) => {
-      setAnsnum(data.msg.length);
+    CommentApi.getCommentList(questionid).then(res => {
+      setAnsnum(res.length)
     })
   }
 
@@ -101,11 +89,13 @@ function Content(props) {
   const [likes, setLikes] = useState(item.great);
   const [ansnum, setAnsnum] = useState(item.ansnum);
 
-  //回答人数 动态变化
+  /* 获取当前问题回答人数 */
   useEffect(() => {
     setAnsnum(props.ansnumMsg);
   }, [props.ansnumMsg])
 
+  /* 判断是否点赞 */
+  /* 后端 question中增加likeState */
   useEffect(() => {
     axios({
       method: 'post',
@@ -130,42 +120,69 @@ function Content(props) {
   }, [])
 
   //点赞
+  // const handleLike = (questionid, userid) => {
+  //   axios({
+  //     method: 'post',
+  //     url: 'http://120.77.8.223:88/aplike',
+  //     data: {
+  //       questionid,
+  //       userid,
+  //     }
+  //   }).then((res) => {
+  //     if (res.data.msg === "点赞成功") {
+  //       setIsLiked(true);
+  //       setLikes(item.great + 1);
+  //     }
+  //   }).catch((error) => {
+  //     console.log(error)
+  //   })
+  // }
+
+  /* 点赞 */
   const handleLike = (questionid, userid) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/aplike',
-      data: {
-        questionid,
-        userid,
-      }
-    }).then((res) => {
-      if (res.data.msg === "点赞成功") {
-        setIsLiked(true);
-        setLikes(item.great + 1);
-      }
-    }).catch((error) => {
-      console.log(error)
-    })
+    try {
+      QuestionPoolApi.handleLike(questionid, userid).then((res) => {
+        if (res === "点赞成功") {
+          setIsLiked(true)
+          setLikes(item.great + 1)
+        }
+      })
+    } catch (error) {
+      alert(error)
+    }
+  }
+  /* 取消点赞 */
+  const handleCancleLike = (questionid, userid) => {
+    try {
+      QuestionPoolApi.handleLikeoff(questionid, userid).then((res) => {
+        if (res === "取消点赞成功") {
+          setIsLiked(false)
+          setLikes(likes - 1)
+        }
+      })
+    } catch (error) {
+      alert(error)
+    }
   }
 
   //取消点赞
-  const handleCancleLike = (questionid, userid) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/aplikeoff',
-      data: {
-        questionid,
-        userid,
-      }
-    }).then((res) => {
-      if (res.data.msg === "取消点赞成功") {
-        setIsLiked(false);
-        setLikes(likes - 1);
-      }
-    }).catch(error => {
-      console.log(error);
-    })
-  }
+  // const handleCancleLike = (questionid, userid) => {
+  //   axios({
+  //     method: 'post',
+  //     url: 'http://120.77.8.223:88/aplikeoff',
+  //     data: {
+  //       questionid,
+  //       userid,
+  //     }
+  //   }).then((res) => {
+  //     if (res.data.msg === "取消点赞成功") {
+  //       setIsLiked(false);
+  //       setLikes(likes - 1);
+  //     }
+  //   }).catch(error => {
+  //     console.log(error);
+  //   })
+  // }
 
   return (
     <Fragment>
@@ -223,33 +240,25 @@ function Comments() {
   const questionid = enterFlag ? item.questionid : JSON.parse(localStorage.getItem('que_item')).questionid
 
   useEffect(() => {
-    axios({
-      url: 'http://120.77.8.223:88/apans',
-      method: 'post',
-      data: {
-        questionid,
-      }
-    }).then((res) => {
-      const addList = (preList) => {
-        const newList = preList.concat(res.data.msg);
-        return newList;
-      }
-      setItems(addList(items));
-      setIsLoading(false);
-    }).catch((error) => {
-      console.log(error);
-    })
+    try {
+      CommentApi.getCommentList(questionid).then(res => {
+        setItems(res)
+        setIsLoading(false);
+      })
+    } catch (error) {
+      alert(error)
+    }
   }, [])
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
   const [hasMore, setHasMore] = useState(true)
-  const [flag,setFlag] = useState(0);
+  const [flag, setFlag] = useState(0)
 
   async function loadMore() {
-    const append = await moreData(items,flag);
-    setFlag(flag+6);
-    setData(val => [...val, ...append]);
-    setHasMore(append.length > 0);
+    const append = await moreData(items, flag)
+    setFlag(flag + 6)
+    setData(val => [...val, ...append])
+    setHasMore(append.length > 0)
   }
 
   return (

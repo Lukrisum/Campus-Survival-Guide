@@ -211,7 +211,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="网址号码" onClick={() => {
-                navigate('/knowledge_base_picture',{state:{sort:"sites"}});
+                navigate('/knowledge_base_picture', { state: { sort: "sites" } });
               }} />
             </div>
             <span>网址号码</span>
@@ -222,7 +222,7 @@ function Content(props) {
                 src=""
                 alt="教学周历"
                 onClick={() => {
-                  navigate('/knowledge_base_picture',{state:{sort:"calendar"}});
+                  navigate('/knowledge_base_picture', { state: { sort: "calendar" } });
                 }} />
             </div>
             <span>教学周历</span>

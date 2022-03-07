@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@_nu/react-toast": "^0.1.7",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@material-ui/core": "^4.12.3",
@@ -27,6 +28,7 @@
     "react-scripts": "5.0.0",
     "react-virtualized": "^9.22.3",
     "redux": "^4.1.2",
+    "vant": "^3.4.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

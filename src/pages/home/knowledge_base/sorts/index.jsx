@@ -13,6 +13,7 @@ import { actions } from '../../../../redux'
 import profileImg from '../../../../assets/images/ncuhome.jpg'
 import {moreData} from '../../../../utils/infiniteScroll_data'
 import { InfiniteScroll } from 'antd-mobile'
+// import Search_input from '../../../../components/search_input';
 
 axios.defaults.baseURL = "http://120.77.8.223:88";
 
