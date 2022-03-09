@@ -1,22 +1,34 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import mod from './index.module.scss'
 import { connect } from 'react-redux';
 import axios from "axios";
 import profileImg from "../../../../assets/images/ncuhome.jpg"
+import ContentApi from "../../../../api/knowledge_base/content";
 
 function Content(props) {
   const [ans, setAns] = useState();
-  const [isLoading,setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(true);
 
-  axios({
-    method: 'post',
-    url: "http://120.77.8.223:88/ans",
-    data: {
-      questionid: props.questionid
-    }
-  }).then((res) => {
-    setAns(res.data.msg[0].ans);
-    setIsloading(false);
+  // axios({
+  //   method: 'post',
+  //   url: "http://120.77.8.223:88/ans",
+  //   data: {
+  //     questionid: props.questionid
+  //   }
+  // }).then((res) => {
+  //   setAns(res.data.msg[0].ans);
+  //   setIsloading(false);
+  // })
+
+  useEffect(() => {
+    ContentApi.getKnowledgeContent(props.questionid)
+      .then(res => {
+        setAns(res)
+        setIsloading(false)
+      })
+      .catch(error => {
+        alert(error)
+      })
   })
 
   return (
@@ -29,11 +41,11 @@ function Content(props) {
         <span>{props.username + "："}</span>
       </div>
       <div className={mod.text_wrapper}>
-      {
-        isLoading
-        ?<span className={mod.loading}>加载中...</span>
-        :<span dangerouslySetInnerHTML={{__html:`${ans}`}}></span>
-      }
+        {
+          isLoading
+            ? <span className={mod.loading}>加载中...</span>
+            : <span dangerouslySetInnerHTML={{ __html: `${ans}` }}></span>
+        }
       </div>
     </div>
   )

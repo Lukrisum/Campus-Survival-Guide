@@ -10,26 +10,36 @@ class QuestionPoolApiMaker {
 
   instance = axios.create({
     baseURL: Request.baseUrl,
-    timeout: 1000
+    timeout: Request.timeout
   })
 
   urls = {
-    pushQuestion: "/aphand_que",
+    getQuestionList: '/apques',
+    pushQuestion: '/aphand_que',
     pushAnswer: '/aphand_ans',
     like: '/aplike',
     likeoff: '/aplikeoff'
   }
 
+  getQuestionList = async () => {
+    return await this.instance.get(`${this.urls.getQuestionList}`)
+      .then(res => {
+        return res.data.msg
+      })
+      .catch(error => {
+        throw error
+      })
+  }
+
   /* 提问 */
-  pushQuestion = async (questionid, question) => {
+  pushQuestion = async (username, que) => {
     return await this.instance.post(`${this.urls.pushQuestion}`, {
-      questionid,
-      question
-    }, {
-      headers: {
-        'code': 'iknow'
-      }
-    }).then((res) => { console.log(res.data.msg) })
+      username,
+      que
+    }).then(() => { })
+      .catch(error => {
+        throw error
+      })
   }
 
   pushAnswer = async (ans, username, questionid) => {
@@ -40,8 +50,11 @@ class QuestionPoolApiMaker {
     }, {
       headers: {
         'code': 'iknow'
-      }
+      },
     }).then(() => { })
+      .catch(error => {
+        throw error
+      })
   }
 
   handleLike = async (questionid, userid) => {
@@ -50,6 +63,8 @@ class QuestionPoolApiMaker {
       userid
     }).then(res => {
       return res.data.msg
+    }).catch(error => {
+      throw error
     })
   }
 
@@ -59,6 +74,8 @@ class QuestionPoolApiMaker {
       userid
     }).then((res) => {
       return res.data.msg
+    }).catch(error => {
+      throw error
     })
   }
 }

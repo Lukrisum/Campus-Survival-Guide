@@ -16,7 +16,7 @@ import { moreData } from '../../../../utils/infiniteScroll_data';
 import CommentApi from "../../../../api/question_pool/comment_list";
 import QuestionPoolApi from "../../../../api/question_pool/question_pool";
 
-const Comment_area = (props) => {
+const Comment_area = () => {
   const location = useLocation();
   const [popup, setPopup] = useState(false);
   const [msg, setMsg] = useState(location.state.props);
@@ -24,15 +24,12 @@ const Comment_area = (props) => {
 
   /* 回答 */
   const handleSubmit = (answer) => {
-    try {
-      QuestionPoolApi.pushAnswer(answer, "wtf", msg.questionid).then(() => {
+    QuestionPoolApi.pushAnswer(answer, "wtf", msg.questionid)
+      .then(() => {
         alert("提交成功(待审核...)")
         setPopup(false)
         handleGetAnsnum(msg.questionid)
-      })
-    } catch (error) {
-      alert(error)
-    }
+      }).catch(error => alert(error))
   }
 
   /* 当前问题回答人数 */
@@ -95,7 +92,7 @@ function Content(props) {
   }, [props.ansnumMsg])
 
   /* 判断是否点赞 */
-  /* 后端 question中增加likeState */
+  /* 日后 question中增加likeState */
   useEffect(() => {
     axios({
       method: 'post',
@@ -119,70 +116,27 @@ function Content(props) {
     })
   }, [])
 
-  //点赞
-  // const handleLike = (questionid, userid) => {
-  //   axios({
-  //     method: 'post',
-  //     url: 'http://120.77.8.223:88/aplike',
-  //     data: {
-  //       questionid,
-  //       userid,
-  //     }
-  //   }).then((res) => {
-  //     if (res.data.msg === "点赞成功") {
-  //       setIsLiked(true);
-  //       setLikes(item.great + 1);
-  //     }
-  //   }).catch((error) => {
-  //     console.log(error)
-  //   })
-  // }
-
   /* 点赞 */
   const handleLike = (questionid, userid) => {
-    try {
-      QuestionPoolApi.handleLike(questionid, userid).then((res) => {
+    QuestionPoolApi.handleLike(questionid, userid)
+      .then((res) => {
         if (res === "点赞成功") {
           setIsLiked(true)
-          setLikes(item.great + 1)
+          setLikes(likes + 1)
         }
-      })
-    } catch (error) {
-      alert(error)
-    }
+      }).catch(error => alert(error))
   }
+
   /* 取消点赞 */
   const handleCancleLike = (questionid, userid) => {
-    try {
-      QuestionPoolApi.handleLikeoff(questionid, userid).then((res) => {
+    QuestionPoolApi.handleLikeoff(questionid, userid)
+      .then((res) => {
         if (res === "取消点赞成功") {
           setIsLiked(false)
           setLikes(likes - 1)
         }
-      })
-    } catch (error) {
-      alert(error)
-    }
+      }).catch(error => alert(error))
   }
-
-  //取消点赞
-  // const handleCancleLike = (questionid, userid) => {
-  //   axios({
-  //     method: 'post',
-  //     url: 'http://120.77.8.223:88/aplikeoff',
-  //     data: {
-  //       questionid,
-  //       userid,
-  //     }
-  //   }).then((res) => {
-  //     if (res.data.msg === "取消点赞成功") {
-  //       setIsLiked(false);
-  //       setLikes(likes - 1);
-  //     }
-  //   }).catch(error => {
-  //     console.log(error);
-  //   })
-  // }
 
   return (
     <Fragment>
@@ -239,15 +193,13 @@ function Comments() {
   const enterFlag = item.que || item.que === '';
   const questionid = enterFlag ? item.questionid : JSON.parse(localStorage.getItem('que_item')).questionid
 
+  /* 获取列表 */
   useEffect(() => {
-    try {
-      CommentApi.getCommentList(questionid).then(res => {
+    CommentApi.getCommentList(questionid)
+      .then(res => {
         setItems(res)
         setIsLoading(false);
-      })
-    } catch (error) {
-      alert(error)
-    }
+      }).catch(error => alert(error))
   }, [])
 
   const [data, setData] = useState([])

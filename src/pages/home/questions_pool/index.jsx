@@ -1,5 +1,5 @@
 import mod from './index.module.scss';
-import { useState, useEffect,Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import Spinner from '../../../components/spinner';
 import Shady from '../../../components/shady';
@@ -10,11 +10,14 @@ import FabMine from '../../../components/floating_action_button';
 import { connect } from 'react-redux';
 import { actions } from '../../../redux'
 import { moreData } from '../../../utils/infiniteScroll_data';
+import { InfiniteScroll } from 'antd-mobile'
+import QuestionPoolApi from '../../../api/question_pool/question_pool';
+import CommentApi from '../../../api/question_pool/comment_list';
+
 //temp plan
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import { InfiniteScroll } from 'antd-mobile'
 
 function Questions_pool(props) {
   const [isloading, setIsloading] = useState(true);      //whether is loaded or not
@@ -25,71 +28,42 @@ function Questions_pool(props) {
   const [ansnum, setAnsnum] = useState(null);
   const [item, setItem] = useState({})
 
-  //get what`s hot
+  /* 获取问题列表 */
   useEffect(() => {
-    axios.get('http://120.77.8.223:88/apques')
-      .then(({ data }) => {
-        const addList = (preList) => {
-          const newList = preList.concat(data.msg);
-          return newList;
-        }
-        setItems(addList(items));
+    QuestionPoolApi.getQuestionList()
+      .then(res => {
+        setItems(res);
         setIsloading(false);
       })
-      .catch(console.error)
+      .catch(error => alert(error))
   }, [])
 
-  //回答 --> <Keyboard_input/>
+  /* 回答 */
   const handlePushAns = (ans) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/aphand_ans',
-      data: {
-        ans,
-        username: "???",
-        questionid,
-      },
-      headers: {
-        'code': 'iknow'
-      }
-    }).then(() => {
-      alert("提交成功(审核ing...)");
-      setPopup(false);
-      handleGetAnsnum(questionid);
-    }).catch((error) => {
-      console.log(error)
-    })
+    QuestionPoolApi.pushAnswer(ans, '???', questionid)
+      .then(() => {
+        alert("提交成功(审核ing...)");
+        setPopup(false);
+        handleGetAnsnum(questionid);
+      }).catch(error => alert(error))
   }
 
-  //当前回答人数
+  /* 当前问题回答人数 */
   const handleGetAnsnum = (questionid) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/apans',
-      data: {
-        questionid,
-      }
-    }).then(({ data }) => {
-      setAnsnum(data.msg.length);
-    })
+    CommentApi.getCommentList(questionid)
+      .then(res => {
+        setAnsnum(res.length)
+      })
+      .catch(error => alert(error))
   }
 
-  //提问 --> <Keyboard_input/>
-  const handlePushQues = (que) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/aphand_que',
-      data: {
-        username: 'whooo',
-        que,
-      }
-    }).then(() => {
+  /* 提问 */
+  const handlePushQues = (question) => {
+    QuestionPoolApi.pushQuestion("???", question).then(() => {
       alert("提交成功(审核ing...)");
       setPushFlag(false);
       setPopup(false);
-    }).catch((error) => {
-      console.log(error);
-    })
+    }).catch(error => alert(error))
   }
 
   return (
@@ -162,11 +136,11 @@ function Content(props) {
 
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true)
-  const [flag,setFlag] = useState(0)
+  const [flag, setFlag] = useState(0)
 
   async function loadMore() {
-    const append = await moreData(props.content,flag);
-    setFlag(flag+6);
+    const append = await moreData(props.content, flag);
+    setFlag(flag + 6);
     setData(val => [...val, ...append]);
     setHasMore(append.length > 0);
   }
@@ -223,7 +197,7 @@ function DataBar(props) {
   const ansnumMsg = props.ansnum;
   const [isLiked, setIsLiked] = useState(false);
 
-  //检查是否为目标问题
+  /* 检查是否为目标问题 */
   useEffect(() => {
     if (ansnumMsg?.questionid == item.questionid && ansnumMsg.ansnum != null) {
       setAnsnum(ansnumMsg.ansnum);
@@ -254,42 +228,30 @@ function DataBar(props) {
     })
   }, [])
 
-  //点赞
+  /* 点赞 */
   const handleLike = (questionid, userid) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/aplike',
-      data: {
-        questionid,
-        userid,
-      }
-    }).then((res) => {
-      if (res.data.msg === "点赞成功") {
-        setIsLiked(true);
-        setLikes(item.great + 1);
-      }
-    }).catch((error) => {
-      console.log(error)
-    })
+    QuestionPoolApi.handleLike(questionid, userid)
+      .then((res) => {
+        if (res === "点赞成功") {
+          setIsLiked(true);
+          setLikes(likes + 1);
+        }
+      }).catch((error) => {
+        alert(error)
+      })
   }
 
-  //取消点赞
+  /* 取消点赞 */
   const handleCancleLike = (questionid, userid) => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/aplikeoff',
-      data: {
-        questionid,
-        userid,
-      }
-    }).then((res) => {
-      if (res.data.msg === "取消点赞成功") {
-        setIsLiked(false);
-        setLikes(likes - 1);
-      }
-    }).catch(error => {
-      console.log(error);
-    })
+    QuestionPoolApi.handleLikeoff(questionid, userid)
+      .then((res) => {
+        if (res === "取消点赞成功") {
+          setIsLiked(false);
+          setLikes(likes - 1);
+        }
+      }).catch(error => {
+        alert(error)
+      })
   }
 
   return (

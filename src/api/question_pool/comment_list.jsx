@@ -5,7 +5,7 @@ class CommentApiMaker {
 
   constructor() {
     this.instance.interceptors.request.use(null, Request.axiosReqError)
-    this.instance.interceptors.response.use(Request.axiosrResSuccess, Request.axiosrResError)
+    this.instance.interceptors.response.use(Request.axiosResSuccess, Request.axiosResError)
   }
 
   instance = axios.create({
@@ -21,8 +21,12 @@ class CommentApiMaker {
   getCommentList = async (questionid) => {
     return await this.instance.post(`${this.urls.getCommentList}`, {
       questionid,
+    },{
+      timeout:7000
     }).then(res => {
       return res.data.msg
+    }).catch((error) => {
+      throw error
     })
   }
 
