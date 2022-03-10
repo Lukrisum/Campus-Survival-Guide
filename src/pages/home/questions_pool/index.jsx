@@ -1,6 +1,6 @@
 import mod from './index.module.scss';
 import { useState, useEffect, Fragment } from 'react';
-import { useNavigate } from 'react-router';
+import { useHistory } from 'react-router';
 import Spinner from '../../../components/spinner';
 import Shady from '../../../components/shady';
 import KeyboardInput from '../../../components/keyboard_input';
@@ -13,7 +13,7 @@ import { moreData } from '../../../utils/infiniteScroll_data';
 import { InfiniteScroll } from 'antd-mobile'
 import QuestionPoolApi from '../../../api/question_pool/question_pool';
 import CommentApi from '../../../api/question_pool/comment_list';
-import {Alert_error_box} from '../../../components/alert_box';
+import { Alert_error_box } from '../../../components/alert_box';
 //temp plan
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
@@ -27,9 +27,9 @@ function Questions_pool(props) {
   const [pushFlag, setPushFlag] = useState(false)
   const [ansnum, setAnsnum] = useState(null)
   const [item, setItem] = useState({})
-  const [isError,setIsError] = useState({
-    state:false,
-    errMsg:''
+  const [isError, setIsError] = useState({
+    state: false,
+    errMsg: ''
   })
 
   /* 获取问题列表 */
@@ -40,8 +40,8 @@ function Questions_pool(props) {
         setIsloading(false);
       })
       .catch(error => setIsError({
-        state:true,
-        errMsg:error
+        state: true,
+        errMsg: error
       }))
   }, [])
 
@@ -74,63 +74,63 @@ function Questions_pool(props) {
   }
 
   return (
-    <div className={mod.background}>
-      {
-        isError.state
-        ?<Alert_error_box errMsg={isError.errMsg}/>
-        :<></>
-      }
-      {
-        popup
-          ? <Fragment>
-            <Shady onclick={() => {
-              if (pushFlag) {
-                setPushFlag(false);
-              }
-              setPopup(false);
-            }} />
-            <KeyboardInput
-              header={pushFlag ? "提交问题" : "回答问题"}
-              type={pushFlag ? true : false}
-              btnOnclick={(inputValue) => {
+      <div className={mod.background}>
+        {
+          isError.state
+            ? <Alert_error_box errMsg={isError.errMsg} />
+            : <></>
+        }
+        {
+          popup
+            ? <Fragment>
+              <Shady onclick={() => {
                 if (pushFlag) {
-                  handlePushQues(inputValue);
+                  setPushFlag(false);
                 }
-                else {
-                  handlePushAns(inputValue);
-                }
+                setPopup(false);
+              }} />
+              <KeyboardInput
+                header={pushFlag ? "提交问题" : "回答问题"}
+                type={pushFlag ? true : false}
+                btnOnclick={(inputValue) => {
+                  if (pushFlag) {
+                    handlePushQues(inputValue);
+                  }
+                  else {
+                    handlePushAns(inputValue);
+                  }
+                }}
+              />
+            </Fragment>
+            : <Fragment />
+        }
+
+        {
+          isloading
+            ? <Fragment>
+              <Loading />
+            </Fragment>
+            :
+            <Content
+              content={items}
+              handleItem={setItem}
+              item={item}
+              handleToCommentArea={props.sendAction}
+              handlePushAns={(msg) => {
+                setQuestionid(msg);
+                setPopup(true);
+              }}
+              handlePushQues={() => {
+                setPushFlag(true);
+                setPopup(true);
+              }}
+              ansnum={{
+                ansnum,
+                questionid
               }}
             />
-          </Fragment>
-          : <Fragment />
-      }
-
-      {
-        isloading
-          ? <Fragment>
-            <Loading />
-          </Fragment>
-          :
-          <Content
-            content={items}
-            handleItem={setItem}
-            item={item}
-            handleToCommentArea={props.sendAction}
-            handlePushAns={(msg) => {
-              setQuestionid(msg);
-              setPopup(true);
-            }}
-            handlePushQues={() => {
-              setPushFlag(true);
-              setPopup(true);
-            }}
-            ansnum={{
-              ansnum,
-              questionid
-            }}
-          />
-      }
-    </div>
+        }
+      </div>
   )
 }
 
@@ -142,10 +142,9 @@ function Loading() {
   )
 }
 
-
 function Content(props) {
 
-  const nevigate = useNavigate();
+  const history = useHistory();
 
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true)
@@ -160,6 +159,7 @@ function Content(props) {
   }
 
   return (
+
     <div className={mod.list_wrapper}>
       <FabMine onclick={props.handlePushQues} />
       <ul>
@@ -170,7 +170,7 @@ function Content(props) {
                 key={index}
                 onClick={() => {
                   props.handleToCommentArea(item);
-                  nevigate('/comment_area', { state: { props: item } });
+                  history.push({pathname:'/comment_area',  state: { props: item } });
                 }}
                 id={item.questionid}
               >

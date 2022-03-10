@@ -2,7 +2,7 @@ import React from 'react';
 import mod from './index.module.scss';
 import Spinner from '../../../components/spinner';
 import { useState, useEffect, Fragment, useRef } from 'react';
-import { useNavigate } from 'react-router';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -65,7 +65,7 @@ function Loading() {
 }
 
 function Content(props) {
-  const navigate = useNavigate();
+  const history = useHistory();
   const [inputValue, setInputValue] = useState("");
   const [searchItems, setSearchItems] = useState([]);
   const [popup, setPopup] = useState(false);
@@ -169,7 +169,7 @@ function Content(props) {
                           }}
                           onClick={() => {
                             props.handleToContent(item);
-                            navigate('/knowledge_base_content')
+                            history.push('/knowledge_base_content')
                           }}
                         >
                           <div className={mod.search_result_sign}></div>
@@ -190,7 +190,7 @@ function Content(props) {
                 src=""
                 alt="迎新"
                 onClick={() => {
-                  navigate('/knowledge_base_sorts', { state: { api: "/new/ques" } });
+                  history.push('/knowledge_base_sorts', { state: { api: "/new/ques" } });
                 }}
               />
             </div>
@@ -199,7 +199,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="学习" onClick={() => {
-                navigate('/knowledge_base_sorts', { state: { api: "/study/ques" } });
+                history.push('/knowledge_base_sorts', { state: { api: "/study/ques" } });
               }} />
             </div>
             <span>学习</span>
@@ -207,7 +207,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="生活" onClick={() => {
-                navigate('/knowledge_base_sorts', { state: { api: "/life/ques" } });
+                history.push('/knowledge_base_sorts', { state: { api: "/life/ques" } });
               }} />
             </div>
             <span>生活</span>
@@ -215,7 +215,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="行政" onClick={() => {
-                navigate('/knowledge_base_sorts', { state: { api: "/admin/ques" } });
+                history.push('/knowledge_base_sorts', { state: { api: "/admin/ques" } });
               }} />
             </div>
             <span>行政</span>
@@ -223,7 +223,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="网址号码" onClick={() => {
-                navigate('/knowledge_base_picture', { state: { sort: "sites" } });
+                history.push('/knowledge_base_picture', { state: { sort: "sites" } });
               }} />
             </div>
             <span>网址号码</span>
@@ -234,7 +234,7 @@ function Content(props) {
                 src=""
                 alt="教学周历"
                 onClick={() => {
-                  navigate('/knowledge_base_picture', { state: { sort: "calendar" } });
+                  history.push('/knowledge_base_picture', { state: { sort: "calendar" } });
                 }} />
             </div>
             <span>教学周历</span>
@@ -248,7 +248,7 @@ function Content(props) {
 }
 
 function ContentAnsItems(props) {
-  const navigate = useNavigate();
+  const history = useHistory();
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [flag, setFlag] = useState(0)
@@ -282,7 +282,7 @@ function ContentAnsItems(props) {
             key={index}
             onClick={() => {
               props.handleToContent(item);
-              navigate('/knowledge_base_content')
+              history.push('/knowledge_base_content')
             }}
           >
             <div className={mod.hot_ques_top_info_wrapper}>

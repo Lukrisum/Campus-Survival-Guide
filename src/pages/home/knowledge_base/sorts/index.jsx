@@ -2,7 +2,7 @@ import React from 'react';
 import mod from './index.module.scss';
 import Spinner from '../../../../components/spinner';
 import { useState, useEffect, Fragment, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -50,7 +50,7 @@ function Loading() {
 }
 
 function Content(props) {
-  const navigate = useNavigate();
+  const history = useHistory();
   const [inputValue, setInputValue] = useState("");
   const [searchItems, setSearchItems] = useState([]);
   const [popup, setPopup] = useState(false);
@@ -154,7 +154,7 @@ function Content(props) {
                           }}
                           onClick={() => {
                             props.handleToContent(item);
-                            navigate('/knowledge_base_content')
+                            history.push('/knowledge_base_content')
                           }}
                         >
                           <div className={mod.search_result_sign}></div>
@@ -175,7 +175,7 @@ function Content(props) {
 }
 
 function ContentAnsItems(props) {
-  const navigate = useNavigate();
+  const history = useHistory();
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [flag, setFlag] = useState(0)
@@ -195,7 +195,7 @@ function ContentAnsItems(props) {
             key={index}
             onClick={() => {
               props.handleToContent(item);
-              navigate('/knowledge_base_content')
+              history.push('/knowledge_base_content')
             }}>
             <div className={mod.hot_ques_top_info_wrapper}>
               <img src={profileImg} alt="profile_photo" />
