@@ -9,17 +9,7 @@ function Content(props) {
   const [ans, setAns] = useState();
   const [isLoading, setIsloading] = useState(true);
 
-  // axios({
-  //   method: 'post',
-  //   url: "http://120.77.8.223:88/ans",
-  //   data: {
-  //     questionid: props.questionid
-  //   }
-  // }).then((res) => {
-  //   setAns(res.data.msg[0].ans);
-  //   setIsloading(false);
-  // })
-
+  /* 获取详细内容 */
   useEffect(() => {
     ContentApi.getKnowledgeContent(props.questionid)
       .then(res => {

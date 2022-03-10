@@ -3,7 +3,7 @@ import Home from "./pages/home";
 import Knowledge_base from "./pages/home/knowledge_base";
 import Questions_pool from "./pages/home/questions_pool";
 import Comment_area from "./pages/home/questions_pool/comment_area";
-import { Provider } from "react-redux";
+import { Provider as ReduxProvider } from "react-redux";
 import store from "./store";
 import Content from "./pages/home/knowledge_base/content";
 import Sorts from "./pages/home/knowledge_base/sorts";
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 
 function App() {
   return (
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       <div className="App">
         <Routes>
           <Route path='/' element={<Home />}>
@@ -28,11 +28,11 @@ function App() {
           <Route path='/comment_area' element={<Comment_area />}></Route>
           <Route path='/knowledge_base_content' element={<Content />}></Route>
           <Route path='/knowledge_base_sorts' element={<Sorts />}></Route>
-          <Route path='/knowledge_base_picture' element={<Picture/>}></Route>
+          <Route path='/knowledge_base_picture' element={<Picture />}></Route>
           <Route path="/test" element={<App_0 />}></Route>
         </Routes>
       </div>
-    </Provider>
+    </ReduxProvider>
   );
 }
 

@@ -15,22 +15,29 @@ import { InfiniteScroll } from 'antd-mobile'
 import { moreData } from '../../../utils/infiniteScroll_data';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress'
+import { KnowledgeApi } from '../../../api/knowledge_base/knowledge_base'
+import ContentApi from '../../../api/knowledge_base/content';
+import { Alert_error_box } from '../../../components/alert_box';
 
 function Knowledge_base(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
+  const [isError, setIsError] = useState({
+    state: false,
+    errMsg: ''
+  })
 
+  /* 获取知识列表 */
   useEffect(() => {
-    axios.get('http://120.77.8.223:88/ques')
-      .then(({ data }) => {
-        const addList = (preList) => {
-          const newList = preList.concat(data.msg);
-          return newList;
-        }
-        setItems(addList(items))
-        setIsloading(false);
+    KnowledgeApi.getKnowledgeList()
+      .then(res => {
+        setItems(res)
+        setIsloading(false)
       })
-      .catch(console.error)
+      .catch(error => setIsError({
+        state: true,
+        errMsg: error
+      }))
   }, [])
 
   return (
@@ -39,6 +46,11 @@ function Knowledge_base(props) {
         isloading
           ? <Loading />
           : <Content content={items} handleToContent={props.sendAction} />
+      }
+      {
+        isError.state
+          ? <Alert_error_box errMsg={isError.errMsg}/>
+          : <></>
       }
     </div>
   )
@@ -301,17 +313,13 @@ function ContentAnsText(props) {
   const [answer, setAnswer] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  /* 获取详细内容 */
   useEffect(() => {
-    axios({
-      method: 'post',
-      url: 'http://120.77.8.223:88/ans',
-      data: {
-        questionid: props.content
-      }
-    }).then(({ data }) => {
-      setAnswer(data.msg[0].ans);
-      setIsLoading(true);
-    })
+    ContentApi.getKnowledgeContent(props.content)
+      .then(res => {
+        setAnswer(res);
+        setIsLoading(true);
+      })
   }, [])
 
   return (

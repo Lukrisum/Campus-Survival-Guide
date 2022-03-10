@@ -13,20 +13,24 @@ import { moreData } from '../../../utils/infiniteScroll_data';
 import { InfiniteScroll } from 'antd-mobile'
 import QuestionPoolApi from '../../../api/question_pool/question_pool';
 import CommentApi from '../../../api/question_pool/comment_list';
-
+import {Alert_error_box} from '../../../components/alert_box';
 //temp plan
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TextsmsIcon from '@material-ui/icons/Textsms';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 function Questions_pool(props) {
-  const [isloading, setIsloading] = useState(true);      //whether is loaded or not
-  const [popup, setPopup] = useState(false);      //whether to render the input box or not
-  const [items, setItems] = useState([]);        //a storage for the hots
-  const [questionid, setQuestionid] = useState();
-  const [pushFlag, setPushFlag] = useState(false);
-  const [ansnum, setAnsnum] = useState(null);
+  const [isloading, setIsloading] = useState(true)      //whether is loaded or not
+  const [popup, setPopup] = useState(false)      //whether to render the input box or not
+  const [items, setItems] = useState([])        //a storage for the hots
+  const [questionid, setQuestionid] = useState()
+  const [pushFlag, setPushFlag] = useState(false)
+  const [ansnum, setAnsnum] = useState(null)
   const [item, setItem] = useState({})
+  const [isError,setIsError] = useState({
+    state:false,
+    errMsg:''
+  })
 
   /* 获取问题列表 */
   useEffect(() => {
@@ -35,7 +39,10 @@ function Questions_pool(props) {
         setItems(res);
         setIsloading(false);
       })
-      .catch(error => alert(error))
+      .catch(error => setIsError({
+        state:true,
+        errMsg:error
+      }))
   }, [])
 
   /* 回答 */
@@ -68,6 +75,11 @@ function Questions_pool(props) {
 
   return (
     <div className={mod.background}>
+      {
+        isError.state
+        ?<Alert_error_box errMsg={isError.errMsg}/>
+        :<></>
+      }
       {
         popup
           ? <Fragment>
@@ -132,12 +144,14 @@ function Loading() {
 
 
 function Content(props) {
+
   const nevigate = useNavigate();
 
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true)
   const [flag, setFlag] = useState(0)
 
+  /* 无限滚动 */
   async function loadMore() {
     const append = await moreData(props.content, flag);
     setFlag(flag + 6);
