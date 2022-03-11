@@ -21,14 +21,30 @@ function Sorts(props) {
   const [isloading, setIsloading] = useState(true);
   const [items, setItems] = useState([]);
   const location = useLocation();
+  const [api,setApi] = useState('')
+  
+  useEffect(()=>{
+    if (location.state) {
+      sessionStorage.setItem('Api',JSON.stringify(location.state))
+      setApi(location.state.api)
+    }
+    else{
+      if(sessionStorage.getItem('Api')){
+        const Api = JSON.parse(sessionStorage.getItem('Api')).api
+        setApi(Api) 
+      }
+    }
+  })
 
   useEffect(() => {
-    axios.get(location.state.api)
+    if(api){
+      axios.get(api)
       .then(({ data }) => {
         setItems(data.msg);
         setIsloading(false);
       })
-  }, [location])
+    }
+  })
 
   return (
     <div className={mod.background}>

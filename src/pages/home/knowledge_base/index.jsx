@@ -49,7 +49,7 @@ function Knowledge_base(props) {
       }
       {
         isError.state
-          ? <Alert_error_box errMsg={isError.errMsg}/>
+          ? <Alert_error_box errMsg={isError.errMsg} />
           : <></>
       }
     </div>
@@ -190,7 +190,7 @@ function Content(props) {
                 src=""
                 alt="迎新"
                 onClick={() => {
-                  history.push('/knowledge_base_sorts', { state: { api: "/new/ques" } });
+                  history.push({ pathname: '/knowledge_base_sorts', state: { api: "/new/ques" } });
                 }}
               />
             </div>
@@ -199,7 +199,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="学习" onClick={() => {
-                history.push('/knowledge_base_sorts', { state: { api: "/study/ques" } });
+                history.push({ pathname: '/knowledge_base_sorts', state: { api: "/study/ques" } });
               }} />
             </div>
             <span>学习</span>
@@ -207,7 +207,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="生活" onClick={() => {
-                history.push('/knowledge_base_sorts', { state: { api: "/life/ques" } });
+                history.push({ pathname: '/knowledge_base_sorts', state: { api: "/life/ques" } });
               }} />
             </div>
             <span>生活</span>
@@ -215,7 +215,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="行政" onClick={() => {
-                history.push('/knowledge_base_sorts', { state: { api: "/admin/ques" } });
+                history.push({ pathname: '/knowledge_base_sorts', state: { api: "/admin/ques" } });
               }} />
             </div>
             <span>行政</span>
@@ -223,7 +223,7 @@ function Content(props) {
           <div className={mod.div}>
             <div className={mod.section_nav}>
               <img src="" alt="网址号码" onClick={() => {
-                history.push('/knowledge_base_picture', { state: { sort: "sites" } });
+                history.push({ pathname: '/knowledge_base_picture', state: { sort: "sites" } });
               }} />
             </div>
             <span>网址号码</span>
@@ -234,7 +234,7 @@ function Content(props) {
                 src=""
                 alt="教学周历"
                 onClick={() => {
-                  history.push('/knowledge_base_picture', { state: { sort: "calendar" } });
+                  history.push({ pathname: '/knowledge_base_picture', state: { sort: "calendar" } });
                 }} />
             </div>
             <span>教学周历</span>
@@ -276,36 +276,37 @@ function ContentAnsItems(props) {
         <img src="" alt="" />
         <span>热门问题</span>
       </li>
-      {data.map((item, index) => {
-        return (
-          <li
-            key={index}
-            onClick={() => {
-              props.handleToContent(item);
-              history.push('/knowledge_base_content')
-            }}
-          >
-            <div className={mod.hot_ques_top_info_wrapper}>
-              <img src={profileImg} alt="profile_photo" />
-              <span> {item.username}</span>
-            </div>
-            <div className={mod.hot_ques_text_wrapper}>
-              <span className={mod.hot_ques_text_header}>{item.que}</span>
-              <div className={mod.hot_ques_text_content_wrapper}>
-                <span className={mod.hot_ques_text_content}>
-                  <ContentAnsText content={item.questionid} />
-                </span>
+        {data.map((item, index) => {
+          return (
+            <li
+              key={index}
+              onClick={() => {
+                props.handleToContent(item);
+                history.push('/knowledge_base_content')
+              }}
+            >
+              <div className={mod.hot_ques_top_info_wrapper}>
+                <img src={profileImg} alt="profile_photo" />
+                <span> {item.username}</span>
               </div>
-            </div>
-            <div className={mod.hot_ques_bottom_info_wrapper}></div>
-          </li>
-        )
-      })}
-      <InfiniteScroll loadMore={loadMore} hasMore={hasMore} >
-        <InfiniteScrollContent hasMore={hasMore} />
-      </InfiniteScroll>
-      <div className={mod.hot_ques_bottom_blank}></div>
+              <div className={mod.hot_ques_text_wrapper}>
+                <span className={mod.hot_ques_text_header}>{item.que}</span>
+                <div className={mod.hot_ques_text_content_wrapper}>
+                  <span className={mod.hot_ques_text_content}>
+                    <ContentAnsText content={item.questionid} />
+                  </span>
+                </div>
+              </div>
+              <div className={mod.hot_ques_bottom_info_wrapper}></div>
+            </li>
+          )
+        })}
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} >
+          <InfiniteScrollContent hasMore={hasMore} />
+        </InfiniteScroll>      
+       <div className={mod.hot_ques_bottom_blank}></div>
     </ul>
+
   )
 }
 
